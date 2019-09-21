@@ -4,16 +4,23 @@ var TITLES = ['Toyota', 'Mazda', 'Honda', 'Nissan', 'Mitsubichi', 'Subaru', 'Suz
 var DISCRIPTIONS = ['дешевые', 'комфортные', 'уютные', 'с красивым видом', 'просторные', 'тихие'];
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+
+var avatars = getArrStringWithIndex('img/avatars/user', '.png', 8, 2);
+var photos = getArrStringWithIndex('http://o0.github.io/assets/images/tokyo/hotel', '.jpg', 8, 1);
+
+var mapSection = document.querySelector('.map');
+var pinsSection = mapSection.querySelector('.map__pins');
+
+var advertisementData = getArrAdvertisement(8);
 
 // функция выборки случайного элемента из массива
-var getElmFromArr = function (arr) {
-  return arr[Math.floor(Math.random() * arr.length)]
+function getElmFromArr(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
 // функция случайного числа в диапазоне
-var getRndNum = function (min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min)
+function getRndNum(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 // набивка номера
@@ -22,7 +29,7 @@ function padNum(num, lengthNum) {
 }
 
 // массив случайных чисел без повторов в диапазоне от 0 до arrLength с добовлением 0
-var getRndNumbers = function (arrLength, lengthNum) {
+function getRndNumbers(arrLength, lengthNum) {
   var arr = [];
   var rndArr = [];
   for (var i = 0; i < arrLength; i++) {
@@ -39,14 +46,14 @@ var getRndNumbers = function (arrLength, lengthNum) {
     }
   }
   return rndArr;
-};
+}
 
 // массив из случайных элементов друго массива без повторов в диапазоне
-var getRndArrFromOriginalArr = function (originalArr, lengthNewArr) {
+function getRndArrFromOriginalArr(originalArr, lengthNewArr) {
   var sourceArr = originalArr.slice();
   var rndArr = [];
   if (sourceArr.length < lengthNewArr) {
-    lengthNewArr = sourceArr.length
+    lengthNewArr = sourceArr.length;
   }
   for (var i = 0; i < lengthNewArr; i++) {
     var rndI = Math.floor(Math.random() * sourceArr.length);
@@ -57,23 +64,16 @@ var getRndArrFromOriginalArr = function (originalArr, lengthNewArr) {
 }
 
 // массив строк со вставленными случайными(без повторов) индексами(номерами)
-var getArrStringWithIndex = function (startString, endString, arrLength, lengthNum) {
+function getArrStringWithIndex(startString, endString, arrLength, lengthNum) {
   var arr = [];
-  var arrRndNubers = getRndNumbers(arrLength, lengthNum)
+  var arrRndNubers = getRndNumbers(arrLength, lengthNum);
   for (var i = 0; i < arrLength; i++) {
-    arr[i] = startString + arrRndNubers[i] + endString
+    arr[i] = startString + arrRndNubers[i] + endString;
   }
-  return arr
+  return arr;
 }
 
-var avatars = getArrStringWithIndex('img/avatars/user', '.png', 8, 2);
-var address = getRndNum(689, 779) + ', ' + getRndNum(763, 774); /* удали */
-var photos = getArrStringWithIndex('http://o0.github.io/assets/images/tokyo/hotel', '.jpg', 8, 1);
-
-var mapSection = document.querySelector('.map');
-var pinsSection = mapSection.querySelector('.map__pins');
-
-var getArrAdvertisement = function (arrLength) {
+function getArrAdvertisement(arrLength) {
   var arr = [];
   for (var i = 0; i < arrLength; i++) {
     var rooms = getRndNum(1, 5);
@@ -103,12 +103,10 @@ var getArrAdvertisement = function (arrLength) {
         x: getRndNum(0, 100),
         y: getRndNum(130, 630)
       }
-    }
+    };
   }
   return arr;
 }
-
-var advertisementData = getArrAdvertisement(8);
 
 mapSection.classList.remove('map--faded');
 
