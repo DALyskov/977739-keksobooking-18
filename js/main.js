@@ -28,24 +28,31 @@ function padNum(num, lengthNum) {
   return num.toString().padStart(lengthNum, 0);
 }
 
-// массив случайных чисел без повторов в диапазоне от 0 до arrLength с добовлением 0
+function getRndArrFromArr(arr) {
+  var j;
+  var temp;
+  for (var i = arr.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    temp = arr[j];
+    arr[j] = arr[i];
+    arr[i] = temp;
+  }
+  return arr;
+}
+
+// массив случайных чисел без повторов в диапазоне от 1 до arrLength с добовлением 0
 function getRndNumbers(arrLength, lengthNum) {
   var arr = [];
-  var rndArr = [];
   for (var i = 0; i < arrLength; i++) {
     arr[i] = 1 + i;
   }
-  for (i = 0; i < arrLength; i++) {
-    var rndI = Math.floor(Math.random() * arr.length);
-    rndArr[i] = arr[rndI];
-    arr.splice(rndI, 1);
-  }
+  getRndArrFromArr(arr);
   if (lengthNum > 1) {
     for (i = 0; i < arrLength; i++) {
-      rndArr[i] = padNum(rndArr[i], lengthNum);
+      arr[i] = padNum(arr[i], lengthNum);
     }
   }
-  return rndArr;
+  return arr;
 }
 
 // массив из случайных элементов друго массива без повторов в диапазоне
@@ -60,6 +67,8 @@ function getRndArrFromOriginalArr(originalArr, lengthNewArr) {
     rndArr[i] = sourceArr[rndI];
     sourceArr.splice(rndI, 1);
   }
+
+
   return rndArr;
 }
 
@@ -86,11 +95,6 @@ function getArrAdvertisement(arrLength) {
         address: getRndNum(689, 779) + ', ' + getRndNum(763, 774),
         price: getRndNum(2000, 50000),
         type: getElmFromArr(TYPES),
-        // rooms: getRndNum(1, 5),                Это возможно?
-        // getGuests: function () {
-        //   return this.rooms * 2 - 1;
-        // },
-        // guests: getGuests()
         rooms: rooms,
         guests: rooms * 2 - getRndNum(1, 2),
         checkin: getRndNum(12, 14) + ':00',
