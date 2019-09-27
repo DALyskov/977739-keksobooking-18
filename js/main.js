@@ -4,7 +4,13 @@ var TITLES = ['Toyota', 'Mazda', 'Honda', 'Nissan', 'Mitsubichi', 'Subaru', 'Suz
 var DISCRIPTIONS = ['дешевые', 'комфортные', 'уютные', 'с красивым видом', 'просторные', 'тихие'];
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var QUANTITY_ADVERTISEMENT = 3;
+var QUANTITY_ADVERTISEMENT = 15;
+var NOMINATIVE = 1;
+var GENITIVE_START = 5;
+var GENITIVE_END = 20;
+var PIN_ELM_WIDTH = 50;
+var PIN_ELM_HEIGHT = 70;
+var ESC_KEYCODE = 27;
 
 var avatars = getArrStringWithIndex('img/avatars/user', '.png', 8, 2);
 var photos = getArrStringWithIndex('http://o0.github.io/assets/images/tokyo/hotel', '.jpg', 3, 1);
@@ -126,11 +132,12 @@ function addPin(pinAmount) {
   for (var i = 0; i < pinAmount; i++) {
     var pinElm = template.cloneNode(true);
     pinElm.classList.add('map__pin--new');
-    pinElm.style.left = advertisementsData[i].location.x - (25 / pinsSection.offsetWidth * 100) + '%';
-    pinElm.style.top = (advertisementsData[i].location.y - 70) + 'px';
+    pinElm.style.left = advertisementsData[i].location.x - (PIN_ELM_WIDTH / 2 / pinsSection.offsetWidth * 100) + '%';
+    pinElm.style.top = (advertisementsData[i].location.y - PIN_ELM_HEIGHT) + 'px';
     pinElm.querySelector('img').src = advertisementsData[i].author.avatar;
     pinElm.querySelector('img').alt = advertisementsData[i].offer.title;
     pinFragment.append(pinElm);
+
   }
   pinsSection.append(pinFragment);
 }
@@ -164,20 +171,20 @@ function addСard(advertisement) {
 
   var rooms = advertisement.offer.rooms;
   var guests = advertisement.offer.guests;
-  if (rooms === 1 || (rooms > 20 && rooms % 10 === 1)) {
-    if (guests === 1 || (guests > 20 && guests % 10 === 1)) {
+  if (rooms === NOMINATIVE || (rooms > GENITIVE_END && rooms % 10 === NOMINATIVE)) {
+    if (guests === NOMINATIVE || (guests > GENITIVE_END && guests % 10 === NOMINATIVE)) {
       cardElm.querySelector('.popup__text--capacity').textContent = advertisement.offer.rooms + ' комната для ' + advertisement.offer.guests + ' гостя';
     } else {
       cardElm.querySelector('.popup__text--capacity').textContent = advertisement.offer.rooms + ' комната для ' + advertisement.offer.guests + ' гостей';
     }
-  } else if (rooms >= 5 || (rooms > 20 && rooms % 10 >= 5)) {
-    if (guests === 1 || (guests > 20 && guests % 10 === 1)) {
+  } else if (rooms >= GENITIVE_START || (rooms > GENITIVE_END && rooms % 10 >= GENITIVE_START)) {
+    if (guests === NOMINATIVE || (guests > GENITIVE_END && guests % 10 === NOMINATIVE)) {
       cardElm.querySelector('.popup__text--capacity').textContent = advertisement.offer.rooms + ' комнат для ' + advertisement.offer.guests + ' гостя';
     } else {
       cardElm.querySelector('.popup__text--capacity').textContent = advertisement.offer.rooms + ' комнат для ' + advertisement.offer.guests + ' гостей';
     }
   } else {
-    if (guests === 1 || (guests > 20 && guests % 10 === 1)) {
+    if (guests === NOMINATIVE || (guests > GENITIVE_END && guests % 10 === NOMINATIVE)) {
       cardElm.querySelector('.popup__text--capacity').textContent = advertisement.offer.rooms + ' комнаты для ' + advertisement.offer.guests + ' гостя';
     } else {
       cardElm.querySelector('.popup__text--capacity').textContent = advertisement.offer.rooms + ' комнаты для ' + advertisement.offer.guests + ' гостей';
@@ -216,9 +223,26 @@ function addСard(advertisement) {
 
 var pins = pinsSection.querySelectorAll('.map__pin--new');
 
+function popupEscPressHandler(evt, domElement) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closePopup(domElement);
+  }
+}
+
 function pinClickHandler(advertisement) {
   pins[i].addEventListener('click', function () {
     addСard(advertisement);
+    var card = document.querySelector('.map__card');
+    document.addEventListener('keydown', function (evt) {
+      popupEscPressHandler(evt, card);
+    });
+  });
+}
+
+function closePopup(domElement) {
+  domElement.remove();
+  document.removeEventListener('keydown', function (evt) {
+    popupEscPressHandler(evt, domElement);
   });
 }
 
