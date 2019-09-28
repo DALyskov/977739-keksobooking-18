@@ -4,7 +4,7 @@ var TITLES = ['Toyota', 'Mazda', 'Honda', 'Nissan', 'Mitsubichi', 'Subaru', 'Suz
 var DISCRIPTIONS = ['дешевые', 'комфортные', 'уютные', 'с красивым видом', 'просторные', 'тихие'];
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var QUANTITY_ADVERTISEMENT = 15;
+var QUANTITY_ADVERTISEMENT = 8;
 var NOMINATIVE = 1;
 var GENITIVE_START = 5;
 var GENITIVE_END = 20;
@@ -81,14 +81,10 @@ function getRndNumbers(arrLength, lengthNum) {
   }
   var newArr = getRndArrFromArr(arr);
   if (lengthNum > 1) {
-    // for (i = 0; i < arrLength; i++) {
-    //   newArr[i] = padNum(newArr[i], lengthNum);
-    // }
     newArr.forEach(function (v, j) {
       // почему не работает v = padNum(v, lengthNum). из-за передачи аргумента в параметр функции по ссылке?
       newArr[j] = padNum(newArr[j], lengthNum);
     });
-
   }
   return newArr;
 }
@@ -142,8 +138,6 @@ function getArrAdvertisement(arrLength) {
   }
   return arr;
 }
-
-// mapSection.classList.remove('map--faded');
 
 function addPin(pinAmount) {
   var template = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -249,7 +243,6 @@ function addСard(advertisement) {
 
   cardМarker.before(cardFragment);
 }
-// addPin(QUANTITY_ADVERTISEMENT);
 
 function toggleEnableBlock(arrSelects, arrInputs, toggle) {
   arrSelects.forEach(function (v) {
@@ -334,52 +327,6 @@ function closePopup(domElement) {
 for (var i = 0; i < pins.length; i++) {
   pinClickHandler(advertisementsData[i]);
 }
-
-// function toggleEnableBlock(arrSelects, arrInputs, toggle) {
-//   arrSelects.forEach(function (v) {
-//     v.disabled = toggle;
-//   });
-//   arrInputs.forEach(function (v) {
-//     v.disabled = toggle;
-//   });
-// }
-
-// function disableMapFilter() {
-//   toggleEnableBlock(mapFilterSelects, mapFilterInputs, true);
-// }
-// disableMapFilter();
-
-// function enableMapFilter() {
-//   toggleEnableBlock(mapFilterSelects, mapFilterInputs, false);
-// }
-
-// function disableAdForm() {
-//   toggleEnableBlock(adFormSelects, adFormInputs, true);
-// }
-// disableAdForm();
-
-// function enableAdForm() {
-//   toggleEnableBlock(adFormSelects, adFormInputs, false);
-// }
-
-// function enablePage() {
-//   mapSection.classList.remove('map--faded');
-//   adForm.classList.remove('ad-form--disabled');
-//   enableMapFilter();
-//   enableAdForm();
-//   addPin(QUANTITY_ADVERTISEMENT);
-//   // addСard(1);
-//   adFormAddress.value = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2) + ', ' + Math.round(pinMain.offsetTop + pinMain.offsetHeight + 12);
-// }
-
-// adFormAddress.value = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2) + ', ' + Math.round(pinMain.offsetTop + pinMain.offsetHeight / 2);
-
-// pinMain.addEventListener('mousedown', enablePage);
-// pinMain.addEventListener('keydown', function (evt) {
-//   if (evt.keyCode === ENTER_KEYCODE || evt.keyCode === SPACE_KEYCODE) {
-//     enablePage();
-//   }
-// });
 
 function checkAdFormGuestsQuantity() {
   switch (adFormRoomNumber.value) {
