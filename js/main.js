@@ -10,6 +10,8 @@ var GENITIVE_START = 5;
 var GENITIVE_END = 20;
 var PIN_ELM_WIDTH = 50;
 var PIN_ELM_HEIGHT = 70;
+var ENTER_KEYCODE = 13;
+var SPACE_KEYCODE = 32;
 var ESC_KEYCODE = 27;
 
 var avatars = getArrStringWithIndex('img/avatars/user', '.png', 8, 2);
@@ -20,6 +22,19 @@ var pinsSection = mapSection.querySelector('.map__pins');
 var cardМarker = mapSection.querySelector('.map__filters-container');
 
 var advertisementsData = getArrAdvertisement(QUANTITY_ADVERTISEMENT);
+
+var pinMain = pinsSection.querySelector('.map__pin--main');
+var mapFilter = document.querySelector('.map__filters');
+var mapFilterSelects = mapFilter.querySelectorAll('select');
+var mapFilterInputs = mapFilter.querySelectorAll('input');
+var adForm = document.querySelector('.ad-form');
+var adFormSelects = adForm.querySelectorAll('select');
+var adFormInputs = adForm.querySelectorAll('input');
+var adFormAddress = adForm.querySelector('#address');
+
+var adFormRoomNumber = adForm.querySelector('#room_number');
+var adFormGuestsQuantity = adForm.querySelector('#capacity');
+
 
 // функция выборки случайного элемента из массива
 function getElmFromArr(arr) {
@@ -66,9 +81,14 @@ function getRndNumbers(arrLength, lengthNum) {
   }
   var newArr = getRndArrFromArr(arr);
   if (lengthNum > 1) {
-    for (i = 0; i < arrLength; i++) {
-      newArr[i] = padNum(newArr[i], lengthNum);
-    }
+    // for (i = 0; i < arrLength; i++) {
+    //   newArr[i] = padNum(newArr[i], lengthNum);
+    // }
+    newArr.forEach(function (v, j) {
+      // почему не работает v = padNum(v, lengthNum). из-за передачи аргумента в параметр функции по ссылке?
+      newArr[j] = padNum(newArr[j], lengthNum);
+    });
+
   }
   return newArr;
 }
@@ -123,7 +143,7 @@ function getArrAdvertisement(arrLength) {
   return arr;
 }
 
-mapSection.classList.remove('map--faded');
+// mapSection.classList.remove('map--faded');
 
 function addPin(pinAmount) {
   var template = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -142,7 +162,6 @@ function addPin(pinAmount) {
   pinsSection.append(pinFragment);
 }
 
-addPin(QUANTITY_ADVERTISEMENT);
 
 function addСard(advertisement) {
   var template = document.querySelector('#card').content.querySelector('.map__card');
@@ -171,6 +190,7 @@ function addСard(advertisement) {
 
   var rooms = advertisement.offer.rooms;
   var guests = advertisement.offer.guests;
+  // Вернуться к вопросу 'условие в функцию'
   if (rooms === NOMINATIVE || (rooms > GENITIVE_END && rooms % 10 === NOMINATIVE)) {
     if (guests === NOMINATIVE || (guests > GENITIVE_END && guests % 10 === NOMINATIVE)) {
       cardElm.querySelector('.popup__text--capacity').textContent = advertisement.offer.rooms + ' комната для ' + advertisement.offer.guests + ' гостя';
@@ -198,7 +218,8 @@ function addСard(advertisement) {
     iconFeatureItems[j].style.display = 'none';
     for (var k = 0; k < advertisement.offer.features.length; k++) {
       // Испаравь .includes на .contains
-      if (iconFeatureItems[j].classList[1].includes(advertisement.offer.features[k])) {
+      if (iconFeatureItems[j].classList[1].indexOf(advertisement.offer.features[k]) !== -1) {
+      // if (iconFeatureItems[j].classList[1].contains('popup__feature--' + advertisement.offer.features[k])) {
         iconFeatureItems[j].style.display = 'inline-block';
       }
     }
@@ -208,11 +229,19 @@ function addСard(advertisement) {
 
   var popupPhotos = cardElm.querySelector('.popup__photos');
   cardElm.querySelector('.popup__photo').src = advertisement.offer.photos[0];
-  for (j = 1; j < advertisement.offer.photos.length; j++) {
-    var popupPhoto = cardElm.querySelector('.popup__photo').cloneNode(true);
-    popupPhoto.src = advertisement.offer.photos[j];
-    popupPhotos.append(popupPhoto);
-  }
+  // for (j = 1; j < advertisement.offer.photos.length; j++) {
+  //   var popupPhoto = cardElm.querySelector('.popup__photo').cloneNode(true);
+  //   popupPhoto.src = advertisement.offer.photos[j];
+  //   popupPhotos.append(popupPhoto);
+  // }
+  // Считаю, что в этом случае обычный for-цикл лучше
+  advertisement.offer.photos.forEach(function (v, i) {
+    if (i >= 1) {
+      var popupPhoto = cardElm.querySelector('.popup__photo').cloneNode(true);
+      popupPhoto.src = v;
+      popupPhotos.append(popupPhoto);
+    }
+  });
 
   cardElm.querySelector('.popup__avatar').src = advertisement.author.avatar;
 
@@ -220,6 +249,53 @@ function addСard(advertisement) {
 
   cardМarker.before(cardFragment);
 }
+// addPin(QUANTITY_ADVERTISEMENT);
+
+function toggleEnableBlock(arrSelects, arrInputs, toggle) {
+  arrSelects.forEach(function (v) {
+    v.disabled = toggle;
+  });
+  arrInputs.forEach(function (v) {
+    v.disabled = toggle;
+  });
+}
+
+function disableMapFilter() {
+  toggleEnableBlock(mapFilterSelects, mapFilterInputs, true);
+}
+disableMapFilter();
+
+function enableMapFilter() {
+  toggleEnableBlock(mapFilterSelects, mapFilterInputs, false);
+}
+
+function disableAdForm() {
+  toggleEnableBlock(adFormSelects, adFormInputs, true);
+}
+disableAdForm();
+
+function enableAdForm() {
+  toggleEnableBlock(adFormSelects, adFormInputs, false);
+}
+
+function enablePage() {
+  mapSection.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  enableMapFilter();
+  enableAdForm();
+  addPin(QUANTITY_ADVERTISEMENT);
+  // addСard(1);
+  adFormAddress.value = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2) + ', ' + Math.round(pinMain.offsetTop + pinMain.offsetHeight + 12);
+}
+
+adFormAddress.value = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2) + ', ' + Math.round(pinMain.offsetTop + pinMain.offsetHeight / 2);
+
+pinMain.addEventListener('mousedown', enablePage);
+pinMain.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE || evt.keyCode === SPACE_KEYCODE) {
+    enablePage();
+  }
+});
 
 var pins = pinsSection.querySelectorAll('.map__pin--new');
 
@@ -228,24 +304,110 @@ function popupEscPressHandler(evt, domElement) {
     closePopup(domElement);
   }
 }
-
+// Тут большой вопрос, в котором самостаятельно не разобрался
 function pinClickHandler(advertisement) {
   pins[i].addEventListener('click', function () {
     addСard(advertisement);
-    var card = document.querySelector('.map__card');
-    document.addEventListener('keydown', function (evt) {
+    // var card = document.querySelector('.map__card');
+    var cards = document.querySelectorAll('.map__card');
+    var card = cards[cards.length - 1];
+    document.addEventListener('keydown', function rem(evt) {
       popupEscPressHandler(evt, card);
-    });
+    }, {once: true});
+
+    // document.addEventListener('keydown', popupEscPressHandler);
+
+    // document.addEventListener('keydown', function rem(evt) {
+    //   popupEscPressHandler(evt, card);
+    // });
   });
 }
 
 function closePopup(domElement) {
   domElement.remove();
-  document.removeEventListener('keydown', function (evt) {
-    popupEscPressHandler(evt, domElement);
-  });
+  // document.removeEventListener('keydown', function rem(evt) {
+  //   popupEscPressHandler(evt, domElement);
+  // });
+  // document.removeEventListener('keydown', popupEscPressHandler);
 }
 
 for (var i = 0; i < pins.length; i++) {
   pinClickHandler(advertisementsData[i]);
 }
+
+// function toggleEnableBlock(arrSelects, arrInputs, toggle) {
+//   arrSelects.forEach(function (v) {
+//     v.disabled = toggle;
+//   });
+//   arrInputs.forEach(function (v) {
+//     v.disabled = toggle;
+//   });
+// }
+
+// function disableMapFilter() {
+//   toggleEnableBlock(mapFilterSelects, mapFilterInputs, true);
+// }
+// disableMapFilter();
+
+// function enableMapFilter() {
+//   toggleEnableBlock(mapFilterSelects, mapFilterInputs, false);
+// }
+
+// function disableAdForm() {
+//   toggleEnableBlock(adFormSelects, adFormInputs, true);
+// }
+// disableAdForm();
+
+// function enableAdForm() {
+//   toggleEnableBlock(adFormSelects, adFormInputs, false);
+// }
+
+// function enablePage() {
+//   mapSection.classList.remove('map--faded');
+//   adForm.classList.remove('ad-form--disabled');
+//   enableMapFilter();
+//   enableAdForm();
+//   addPin(QUANTITY_ADVERTISEMENT);
+//   // addСard(1);
+//   adFormAddress.value = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2) + ', ' + Math.round(pinMain.offsetTop + pinMain.offsetHeight + 12);
+// }
+
+// adFormAddress.value = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2) + ', ' + Math.round(pinMain.offsetTop + pinMain.offsetHeight / 2);
+
+// pinMain.addEventListener('mousedown', enablePage);
+// pinMain.addEventListener('keydown', function (evt) {
+//   if (evt.keyCode === ENTER_KEYCODE || evt.keyCode === SPACE_KEYCODE) {
+//     enablePage();
+//   }
+// });
+
+function checkAdFormGuestsQuantity() {
+  switch (adFormRoomNumber.value) {
+    case '1':
+      adFormGuestsQuantity.options[0].disabled = true;
+      adFormGuestsQuantity.options[1].disabled = true;
+      adFormGuestsQuantity.options[2].disabled = false;
+      adFormGuestsQuantity.options[3].disabled = true;
+      break;
+    case '2':
+      adFormGuestsQuantity.options[0].disabled = true;
+      adFormGuestsQuantity.options[1].disabled = false;
+      adFormGuestsQuantity.options[2].disabled = false;
+      adFormGuestsQuantity.options[3].disabled = true;
+      break;
+    case '3':
+      adFormGuestsQuantity.options[0].disabled = false;
+      adFormGuestsQuantity.options[1].disabled = false;
+      adFormGuestsQuantity.options[2].disabled = false;
+      adFormGuestsQuantity.options[3].disabled = true;
+      break;
+    default:
+      adFormGuestsQuantity.options[0].disabled = true;
+      adFormGuestsQuantity.options[1].disabled = true;
+      adFormGuestsQuantity.options[2].disabled = true;
+      adFormGuestsQuantity.options[3].disabled = false;
+  }
+}
+checkAdFormGuestsQuantity();
+
+adFormRoomNumber.addEventListener('change', checkAdFormGuestsQuantity);
