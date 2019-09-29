@@ -278,6 +278,32 @@ function enablePage() {
   enableAdForm();
   addPin(QUANTITY_ADVERTISEMENT);
   // addСard(1);
+  var pins = pinsSection.querySelectorAll('.map__pin--new');
+  // Тут большой вопрос, в котором самостаятельно не разобрался
+  function pinClickHandler(advertisement) {
+    pins[i].addEventListener('click', function () {
+      var cards = document.querySelectorAll('.map__card');
+      cards.forEach(function (v) {
+        v.remove();
+      });
+      addСard(advertisement);
+      // var card = document.querySelector('.map__card');
+      cards = document.querySelectorAll('.map__card');
+      var card = cards[cards.length - 1];
+      document.addEventListener('keydown', function rem(evt) {
+        popupEscPressHandler(evt, card);
+      }, {once: true});
+
+      // document.addEventListener('keydown', popupEscPressHandler);
+
+      // document.addEventListener('keydown', function rem(evt) {
+      //   popupEscPressHandler(evt, card);
+      // });
+    });
+  }
+  for (var i = 0; i < pins.length; i++) {
+    pinClickHandler(advertisementsData[i]);
+  }
   adFormAddress.value = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2) + ', ' + Math.round(pinMain.offsetTop + pinMain.offsetHeight + 12);
 }
 
@@ -290,30 +316,11 @@ pinMain.addEventListener('keydown', function (evt) {
   }
 });
 
-var pins = pinsSection.querySelectorAll('.map__pin--new');
 
 function popupEscPressHandler(evt, domElement) {
   if (evt.keyCode === ESC_KEYCODE) {
     closePopup(domElement);
   }
-}
-// Тут большой вопрос, в котором самостаятельно не разобрался
-function pinClickHandler(advertisement) {
-  pins[i].addEventListener('click', function () {
-    addСard(advertisement);
-    // var card = document.querySelector('.map__card');
-    var cards = document.querySelectorAll('.map__card');
-    var card = cards[cards.length - 1];
-    document.addEventListener('keydown', function rem(evt) {
-      popupEscPressHandler(evt, card);
-    }, {once: true});
-
-    // document.addEventListener('keydown', popupEscPressHandler);
-
-    // document.addEventListener('keydown', function rem(evt) {
-    //   popupEscPressHandler(evt, card);
-    // });
-  });
 }
 
 function closePopup(domElement) {
@@ -322,10 +329,6 @@ function closePopup(domElement) {
   //   popupEscPressHandler(evt, domElement);
   // });
   // document.removeEventListener('keydown', popupEscPressHandler);
-}
-
-for (var i = 0; i < pins.length; i++) {
-  pinClickHandler(advertisementsData[i]);
 }
 
 function checkAdFormGuestsQuantity() {
