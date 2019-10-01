@@ -82,7 +82,6 @@ function getRndNumbers(arrLength, lengthNum) {
   var newArr = getRndArrFromArr(arr);
   if (lengthNum > 1) {
     newArr.forEach(function (v, j) {
-      // почему не работает v = padNum(v, lengthNum). из-за передачи аргумента в параметр функции по ссылке?
       newArr[j] = padNum(newArr[j], lengthNum);
     });
   }
@@ -211,9 +210,7 @@ function addСard(advertisement) {
   for (var j = 0; j < iconFeatureItems.length; j++) {
     iconFeatureItems[j].style.display = 'none';
     for (var k = 0; k < advertisement.offer.features.length; k++) {
-      // Испаравь .includes на .contains
       if (iconFeatureItems[j].classList[1].indexOf(advertisement.offer.features[k]) !== -1) {
-      // if (iconFeatureItems[j].classList[1].contains('popup__feature--' + advertisement.offer.features[k])) {
         iconFeatureItems[j].style.display = 'inline-block';
       }
     }
@@ -223,19 +220,11 @@ function addСard(advertisement) {
 
   var popupPhotos = cardElm.querySelector('.popup__photos');
   cardElm.querySelector('.popup__photo').src = advertisement.offer.photos[0];
-  // for (j = 1; j < advertisement.offer.photos.length; j++) {
-  //   var popupPhoto = cardElm.querySelector('.popup__photo').cloneNode(true);
-  //   popupPhoto.src = advertisement.offer.photos[j];
-  //   popupPhotos.append(popupPhoto);
-  // }
-  // Считаю, что в этом случае обычный for-цикл лучше
-  advertisement.offer.photos.forEach(function (v, i) {
-    if (i >= 1) {
-      var popupPhoto = cardElm.querySelector('.popup__photo').cloneNode(true);
-      popupPhoto.src = v;
-      popupPhotos.append(popupPhoto);
-    }
-  });
+  for (j = 1; j < advertisement.offer.photos.length; j++) {
+    var popupPhoto = cardElm.querySelector('.popup__photo').cloneNode(true);
+    popupPhoto.src = advertisement.offer.photos[j];
+    popupPhotos.append(popupPhoto);
+  }
 
   cardElm.querySelector('.popup__avatar').src = advertisement.author.avatar;
 
@@ -277,33 +266,26 @@ function enablePage() {
   enableMapFilter();
   enableAdForm();
   addPin(QUANTITY_ADVERTISEMENT);
-  // addСard(1);
   var pins = pinsSection.querySelectorAll('.map__pin--new');
-  // Тут большой вопрос, в котором самостаятельно не разобрался
+
   function pinClickHandler(advertisement) {
     pins[i].addEventListener('click', function () {
-      var cards = document.querySelectorAll('.map__card');
-      cards.forEach(function (v) {
-        v.remove();
-      });
+      var card = document.querySelector('.map__card');
+      if (card) {
+        card.remove();
+      }
       addСard(advertisement);
-      // var card = document.querySelector('.map__card');
-      cards = document.querySelectorAll('.map__card');
-      var card = cards[cards.length - 1];
+      card = document.querySelector('.map__card');
       document.addEventListener('keydown', function rem(evt) {
         popupEscPressHandler(evt, card);
       }, {once: true});
-
-      // document.addEventListener('keydown', popupEscPressHandler);
-
-      // document.addEventListener('keydown', function rem(evt) {
-      //   popupEscPressHandler(evt, card);
-      // });
     });
   }
+
   for (var i = 0; i < pins.length; i++) {
     pinClickHandler(advertisementsData[i]);
   }
+
   adFormAddress.value = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2) + ', ' + Math.round(pinMain.offsetTop + pinMain.offsetHeight + 12);
 }
 
@@ -325,39 +307,44 @@ function popupEscPressHandler(evt, domElement) {
 
 function closePopup(domElement) {
   domElement.remove();
-  // document.removeEventListener('keydown', function rem(evt) {
-  //   popupEscPressHandler(evt, domElement);
-  // });
-  // document.removeEventListener('keydown', popupEscPressHandler);
 }
 
-function checkAdFormGuestsQuantity() {
-  switch (adFormRoomNumber.value) {
-    case '1':
-      adFormGuestsQuantity.options[0].disabled = true;
-      adFormGuestsQuantity.options[1].disabled = true;
-      adFormGuestsQuantity.options[2].disabled = false;
-      adFormGuestsQuantity.options[3].disabled = true;
+function disableGuestsOrRoomValue(changeElm) {
+  switch (changeElm) {
+    case adFormGuestsQuantity:
+      for (var i = 0; i < changeElm.options.length; i++) {
+        changeElm.options[i].disabled = true;
+      }
+      var optionNum = Number(adFormRoomNumber.value);
+      if (optionNum !== 100) {
+        for (i = 1; i <= optionNum; i++) {
+          changeElm.querySelector('option[value=\'' + i + '\']').disabled = false;
+        }
+      } else {
+        changeElm.querySelector('option[value=\'' + 0 + '\']').disabled = false;
+      }
       break;
-    case '2':
-      adFormGuestsQuantity.options[0].disabled = true;
-      adFormGuestsQuantity.options[1].disabled = false;
-      adFormGuestsQuantity.options[2].disabled = false;
-      adFormGuestsQuantity.options[3].disabled = true;
+    case adFormRoomNumber:
+      for (i = 0; i < changeElm.options.length; i++) {
+        changeElm.options[i].disabled = true;
+      }
+      changeElm.querySelector('option[value=\'' + 100 + '\']').disabled = false;
+      optionNum = Number(adFormGuestsQuantity.value);
+      if (optionNum !== 0) {
+        for (i = optionNum; i <= 3; i++) {
+          changeElm.querySelector('option[value=\'' + i + '\']').disabled = false;
+          console.log(i);
+        }
       break;
-    case '3':
-      adFormGuestsQuantity.options[0].disabled = false;
-      adFormGuestsQuantity.options[1].disabled = false;
-      adFormGuestsQuantity.options[2].disabled = false;
-      adFormGuestsQuantity.options[3].disabled = true;
-      break;
-    default:
-      adFormGuestsQuantity.options[0].disabled = true;
-      adFormGuestsQuantity.options[1].disabled = true;
-      adFormGuestsQuantity.options[2].disabled = true;
-      adFormGuestsQuantity.options[3].disabled = false;
   }
 }
-checkAdFormGuestsQuantity();
 
-adFormRoomNumber.addEventListener('change', checkAdFormGuestsQuantity);
+disableGuestsOrRoomValue(adFormGuestsQuantity);
+
+adFormRoomNumber.addEventListener('change', function () {
+  disableGuestsOrRoomValue(adFormGuestsQuantity);
+});
+
+adFormGuestsQuantity.addEventListener('change', function () {
+  disableGuestsOrRoomValue(adFormRoomNumber);
+});
