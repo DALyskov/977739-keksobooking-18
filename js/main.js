@@ -333,8 +333,12 @@ function disableGuestsOrRoomValue(changeElm) {
       if (optionNum !== 0) {
         for (i = optionNum; i <= 3; i++) {
           changeElm.querySelector('option[value=\'' + i + '\']').disabled = false;
-          console.log(i);
         }
+      } else {
+        for (i = 0; i < changeElm.options.length; i++) {
+          changeElm.options[i].disabled = false;
+        }
+      }
       break;
   }
 }
