@@ -11,11 +11,6 @@
   var photos = window.util.getArrStringWithIndex('http://o0.github.io/assets/images/tokyo/hotel', '.jpg', 3, 1);
   var advertisementsData = getArrAdvertisement(QUANTITY_ADVERTISEMENT);
 
-  window.date = {
-    QUANTITY_ADVERTISEMENT: QUANTITY_ADVERTISEMENT,
-    advertisementsData: advertisementsData
-  };
-
   function getArrAdvertisement(arrLength) {
     var arr = [];
     for (var i = 0; i < arrLength; i++) {
@@ -50,4 +45,9 @@
     }
     return arr;
   }
+
+  window.date = {
+    QUANTITY_ADVERTISEMENT: QUANTITY_ADVERTISEMENT,
+    advertisementsData: advertisementsData
+  };
 })();

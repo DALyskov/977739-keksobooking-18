@@ -3,15 +3,6 @@
 (function () {
   var ESC_KEYCODE = 27;
 
-  window.util = {
-    getElmFromArr: getElmFromArr,
-    getRndNum: getRndNum,
-    getRndArrFromOriginalArr: getRndArrFromOriginalArr,
-    getArrStringWithIndex: getArrStringWithIndex,
-    toggleEnableBlock: toggleEnableBlock,
-    popupEscPressHandler: popupEscPressHandler
-  };
-
   // функция выборки случайного элемента из массива
   function getElmFromArr(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
@@ -55,6 +46,7 @@
     if (lengthNum > 1) {
       newArr.forEach(function (v, j) {
         newArr[j] = padNum(newArr[j], lengthNum);
+        // v = padNum(v, lengthNum);
       });
     }
     return newArr;
@@ -82,7 +74,7 @@
     });
   }
   // Фун.Обр по esc
-  function popupEscPressHandler(evt, domElement) {
+  function onPopupEscPress(evt, domElement) {
     if (evt.keyCode === ESC_KEYCODE) {
       closePopup(domElement);
     }
@@ -91,4 +83,13 @@
   function closePopup(domElement) {
     domElement.remove();
   }
+
+  window.util = {
+    getElmFromArr: getElmFromArr,
+    getRndNum: getRndNum,
+    getRndArrFromOriginalArr: getRndArrFromOriginalArr,
+    getArrStringWithIndex: getArrStringWithIndex,
+    toggleEnableBlock: toggleEnableBlock,
+    onPopupEscPress: onPopupEscPress
+  };
 })();
