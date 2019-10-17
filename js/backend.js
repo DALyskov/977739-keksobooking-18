@@ -11,21 +11,20 @@
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
         onLoad(xhr.response);
-        // console.log(xhr.response);
       } else {
-        // onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
 
-    // xhr.addEventListener('error', function () {
-    //   onError('Произошла ошибка соединения');
-    // });
+    xhr.addEventListener('error', function () {
+      onError('Произошла ошибка соединения');
+    });
 
-    // xhr.addEventListener('timeout', function () {
-    //   onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
-    // });
+    xhr.addEventListener('timeout', function () {
+      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+    });
 
-    xhr.timeout = 1000;
+    xhr.timeout = 2000;
 
     xhr.open('GET', URL_GET);
     xhr.send();
