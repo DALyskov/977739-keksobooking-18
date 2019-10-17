@@ -13,17 +13,24 @@
   var mapFilterSelects = mapFilter.querySelectorAll('select');
   var mapFilterInputs = mapFilter.querySelectorAll('input');
 
-  function addPin(pinAmount) {
+  function addPin(pinAmount, pins) {
     var template = document.querySelector('#pin').content.querySelector('.map__pin');
     var pinFragment = document.createDocumentFragment();
 
     for (var i = 0; i < pinAmount; i++) {
       var pinElm = template.cloneNode(true);
       pinElm.classList.add('map__pin--new');
-      pinElm.style.left = window.date.advertisementsData[i].location.x - (PIN_ELM_WIDTH / 2 / pinsSection.offsetWidth * 100) + '%';
-      pinElm.style.top = (window.date.advertisementsData[i].location.y - PIN_ELM_HEIGHT) + 'px';
-      pinElm.querySelector('img').src = window.date.advertisementsData[i].author.avatar;
-      pinElm.querySelector('img').alt = window.date.advertisementsData[i].offer.title;
+      // pinElm.style.left = window.date.advertisementsData[i].location.x - (PIN_ELM_WIDTH / 2 / pinsSection.offsetWidth * 100) + '%';
+      pinElm.style.left = pins[i].location.x - (PIN_ELM_WIDTH / 2) + 'px';
+      // pinElm.style.top = (window.date.advertisementsData[i].location.y - PIN_ELM_HEIGHT) + 'px';
+      pinElm.style.top = (pins[i].location.y - PIN_ELM_HEIGHT) + 'px';
+      // pinElm.querySelector('img').src = window.date.advertisementsData[i].author.avatar;
+      pinElm.querySelector('img').src = pins[i].author.avatar;
+      // pinElm.querySelector('img').alt = window.date.advertisementsData[i].offer.title;
+      pinElm.querySelector('img').alt = pins[i].offer.title;
+      // console.log(1, window.date.advertisementsData[i]);
+      // console.log(2, pins[i]);
+
       pinFragment.append(pinElm);
 
     }
@@ -44,26 +51,51 @@
     window.form.adForm.classList.remove('ad-form--disabled');
     enableMapFilter();
     window.form.enableAdForm();
-    addPin(window.date.QUANTITY_ADVERTISEMENT);
-    var pins = pinsSection.querySelectorAll('.map__pin--new');
 
-    function onPinClick(advertisement) {
-      pins[i].addEventListener('click', function () {
-        var card = document.querySelector('.map__card');
-        if (card) {
-          card.remove();
-        }
-        window.card.addСard(advertisement);
-        card = document.querySelector('.map__card');
-        document.addEventListener('keydown', function rem(evt) {
-          window.util.onPopupEscPress(evt, card);
-        }, {once: true});
-      });
-    }
+    window.backend.load(function (v) {
+      // console.log(v);
+      addPin(window.date.QUANTITY_ADVERTISEMENT, v);
 
-    for (var i = 0; i < pins.length; i++) {
-      onPinClick(window.date.advertisementsData[i]);
-    }
+      var pins = pinsSection.querySelectorAll('.map__pin--new');
+
+      function onPinClick(advertisement) {
+        pins[i].addEventListener('click', function () {
+          var card = document.querySelector('.map__card');
+          if (card) {
+            card.remove();
+          }
+          window.card.addСard(advertisement);
+          card = document.querySelector('.map__card');
+          document.addEventListener('keydown', function rem(evt) {
+            window.util.onPopupEscPress(evt, card);
+          }, {once: true});
+        });
+      }
+
+      for (var i = 0; i < pins.length; i++) {
+        onPinClick(v[i]);
+      }
+    });
+
+    // var pins = pinsSection.querySelectorAll('.map__pin--new');
+
+    // function onPinClick(advertisement) {
+    //   pins[i].addEventListener('click', function () {
+    //     var card = document.querySelector('.map__card');
+    //     if (card) {
+    //       card.remove();
+    //     }
+    //     window.card.addСard(advertisement);
+    //     card = document.querySelector('.map__card');
+    //     document.addEventListener('keydown', function rem(evt) {
+    //       window.util.onPopupEscPress(evt, card);
+    //     }, {once: true});
+    //   });
+    // }
+
+    // for (var i = 0; i < pins.length; i++) {
+    //   onPinClick(window.date.advertisementsData[i]);
+    // }
 
     window.form.adFormAddress.value = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2) + ', ' + Math.round(pinMain.offsetTop + pinMain.offsetHeight + 12);
   }

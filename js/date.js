@@ -10,6 +10,7 @@
   var avatars = window.util.getArrStringWithIndex('img/avatars/user', '.png', 8, 2);
   var photos = window.util.getArrStringWithIndex('http://o0.github.io/assets/images/tokyo/hotel', '.jpg', 3, 1);
   var advertisementsData = getArrAdvertisement(QUANTITY_ADVERTISEMENT);
+  console.log(advertisementsData);
 
   function getArrAdvertisement(arrLength) {
     var arr = [];
