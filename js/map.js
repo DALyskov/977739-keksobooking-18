@@ -5,6 +5,7 @@
   var SPACE_KEYCODE = 32;
   var PIN_ELM_WIDTH = 50;
   var PIN_ELM_HEIGHT = 70;
+  var QUANTITY_ADVERTISEMENT = 8;
 
   var mapSection = document.querySelector('.map');
   var pinsSection = mapSection.querySelector('.map__pins');
@@ -39,56 +40,51 @@
     window.util.toggleEnableBlock(mapFilterSelects, mapFilterInputs, false);
   }
 
+  function onLoadXhr(dataXhr) {
+    addPin(QUANTITY_ADVERTISEMENT, dataXhr);
+    var pins = pinsSection.querySelectorAll('.map__pin--new');
+
+    function onPinClick(advertisement) {
+      pins[i].addEventListener('click', function () {
+        window.util.checkAndRemoveElm('.map__card');
+        window.card.addСard(advertisement);
+        var card = document.querySelector('.map__card');
+        document.addEventListener('keydown', function close(evt) {
+          window.util.onPopupEscPress(evt, card);
+          document.removeEventListener('keydown', close);
+        });
+      });
+    }
+
+    for (var i = 0; i < pins.length; i++) {
+      onPinClick(dataXhr[i]);
+    }
+
+    window.util.checkAndRemoveElm('.error');
+    pinMain.removeEventListener('mousedown', enablePage);
+  }
+
+  function onErrorXhr(errorMessage) {
+    var errorElm = document.querySelector('.error');
+    if (errorElm) {
+      errorElm.remove();
+    }
+    var template = document.querySelector('#error').content.querySelector('.error');
+    errorElm = template.cloneNode(true);
+    errorElm.querySelector('.error__message').textContent = errorMessage;
+    document.body.prepend(errorElm);
+
+    var buttonRepeat = document.querySelector('.error__button');
+    buttonRepeat.addEventListener('click', function () {
+      window.backend.load(onLoadXhr, onErrorXhr);
+    });
+  }
+
   function enablePage() {
     mapSection.classList.remove('map--faded');
     window.form.adForm.classList.remove('ad-form--disabled');
     enableMapFilter();
     window.form.enableAdForm();
-
-    function onLoadXhr(dataXhr) {
-      addPin(window.date.QUANTITY_ADVERTISEMENT, dataXhr);
-
-      var pins = pinsSection.querySelectorAll('.map__pin--new');
-
-      function onPinClick(advertisement) {
-        pins[i].addEventListener('click', function () {
-          var card = document.querySelector('.map__card');
-          if (card) {
-            card.remove();
-          }
-          window.card.addСard(advertisement);
-          card = document.querySelector('.map__card');
-          document.addEventListener('keydown', function rem(evt) {
-            window.util.onPopupEscPress(evt, card);
-          }, {once: true});
-        });
-      }
-
-      for (var i = 0; i < pins.length; i++) {
-        onPinClick(dataXhr[i]);
-      }
-
-      var errorElm = document.body.querySelector('.error');
-      if (errorElm) {
-        errorElm.remove();
-      }
-
-      pinMain.removeEventListener('mousedown', enablePage);
-    }
-
-    function onErrorXhr(errorMessage, dataXhr) {
-      var errorElm = document.body.querySelector('.error');
-      if (errorElm) {
-        errorElm.remove();
-      }
-      var template = document.querySelector('#error').content.querySelector('.error');
-      errorElm = template.cloneNode(true);
-      errorElm.querySelector('.error__message').textContent = errorMessage;
-      document.body.prepend(errorElm);
-
-      var buttonRepeat = document.body.querySelector('.error__button');
-      buttonRepeat.addEventListener('click', enablePage);
-    }
 
     window.backend.load(onLoadXhr, onErrorXhr);
 
@@ -104,6 +100,6 @@
 
   window.map = {
     mapSection: mapSection,
-    pinMain: pinMain
+    pinMain: pinMain,
   };
 })();

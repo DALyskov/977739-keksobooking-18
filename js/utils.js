@@ -84,12 +84,21 @@
     domElement.remove();
   }
 
+  // Проверка наличия и удаления предыдущего элемента
+  function checkAndRemoveElm(selectorElm) {
+    var elm = document.querySelector(selectorElm);
+    if (elm) {
+      elm.remove();
+    }
+  }
+
   window.util = {
     getElmFromArr: getElmFromArr,
     getRndNum: getRndNum,
     getRndArrFromOriginalArr: getRndArrFromOriginalArr,
     getArrStringWithIndex: getArrStringWithIndex,
     toggleEnableBlock: toggleEnableBlock,
-    onPopupEscPress: onPopupEscPress
+    onPopupEscPress: onPopupEscPress,
+    checkAndRemoveElm: checkAndRemoveElm,
   };
 })();
