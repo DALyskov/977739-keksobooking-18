@@ -8,12 +8,12 @@
   var adFormInputs = adForm.querySelectorAll('input');
   var adFormAddress = adForm.querySelector('#address');
 
-  window.form = {
-    adForm: adForm,
-    adFormAddress: adFormAddress,
-    enableAdForm: enableAdForm
+  var rooms = {
+    1: [2, 3, 0],
+    2: [3, 0],
+    3: [0],
+    100: [1, 2, 3]
   };
-
 
   function disableAdForm() {
     window.util.toggleEnableBlock(adFormSelects, adFormInputs, true);
@@ -24,49 +24,35 @@
     window.util.toggleEnableBlock(adFormSelects, adFormInputs, false);
   }
 
-  function checkGuestsOrRoomValue(changeElm) {
-    switch (changeElm) {
-      case adFormGuestsQuantity:
-        for (var i = 0; i < changeElm.options.length; i++) {
-          changeElm.options[i].disabled = true;
-        }
-        var optionNum = Number(adFormRoomNumber.value);
-        if (optionNum !== 100) {
-          for (i = 1; i <= optionNum; i++) {
-            changeElm.querySelector('option[value=\'' + i + '\']').disabled = false;
-          }
-        } else {
-          changeElm.querySelector('option[value=\'' + 0 + '\']').disabled = false;
-        }
-        break;
-      case adFormRoomNumber:
-        for (i = 0; i < changeElm.options.length; i++) {
-          changeElm.options[i].disabled = true;
-        }
-        changeElm.querySelector('option[value=\'' + 100 + '\']').disabled = false;
-        optionNum = Number(adFormGuestsQuantity.value);
-        if (optionNum !== 0) {
-          for (i = optionNum; i <= 3; i++) {
-            changeElm.querySelector('option[value=\'' + i + '\']').disabled = false;
-          }
-        } else {
-          for (i = 0; i < changeElm.options.length; i++) {
-            changeElm.options[i].disabled = false;
-          }
-        }
-        break;
+  function setDefaultOptions() {
+    for (var i = 0; i < adFormGuestsQuantity.options.length; i++) {
+      adFormGuestsQuantity.options[i].disabled = false;
+      adFormGuestsQuantity.options[i].selected = false;
+    }
+  }
+
+  function onRoomNumberInput(evt) {
+    var disabled = rooms[evt.target.value];
+    setDefaultOptions();
+    for (var i = 0; i < adFormGuestsQuantity.options.length; i++) {
+      var option = adFormGuestsQuantity.options[i];
+      if (disabled.includes(parseInt(option.value, 10))) {
+        option.disabled = true;
+      } else {
+        option.selected = true;
+      }
     }
   }
 
   adFormAddress.value = Math.round(window.map.pinMain.offsetLeft + window.map.pinMain.offsetWidth / 2) + ', ' + Math.round(window.map.pinMain.offsetTop + window.map.pinMain.offsetHeight / 2);
 
-  checkGuestsOrRoomValue(adFormGuestsQuantity);
-
-  adFormRoomNumber.addEventListener('change', function () {
-    checkGuestsOrRoomValue(adFormGuestsQuantity);
+  adFormRoomNumber.addEventListener('change', function (evt) {
+    onRoomNumberInput(evt);
   });
 
-  adFormGuestsQuantity.addEventListener('change', function () {
-    checkGuestsOrRoomValue(adFormRoomNumber);
-  });
+  window.form = {
+    adForm: adForm,
+    adFormAddress: adFormAddress,
+    enableAdForm: enableAdForm
+  };
 })();
