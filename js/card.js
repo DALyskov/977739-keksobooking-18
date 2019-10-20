@@ -3,7 +3,7 @@
 (function () {
   var cardМarker = window.map.mapSection.querySelector('.map__filters-container');
 
-  var type = {
+  var typeListMap = {
     palace: 'Дворец',
     flat: 'Квартира',
     house: 'Дом',
@@ -30,7 +30,7 @@
     cardElm.querySelector('.popup__title').textContent = advertisement.offer.title;
     cardElm.querySelector('.popup__text--price').innerHTML = advertisement.offer.price + '&#x20bd;<span>/ночь</span>';
 
-    cardElm.querySelector('.popup__type').textContent = type[advertisement.offer.type];
+    cardElm.querySelector('.popup__type').textContent = typeListMap[advertisement.offer.type];
 
     cardElm.querySelector('.popup__text--capacity').textContent = advertisement.offer.rooms + plural([' комната для ', ' комнаты  для ', ' комнат  для '], advertisement.offer.rooms) + advertisement.offer.guests + plural([' гостя', ' гостей'], advertisement.offer.guests);
 

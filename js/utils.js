@@ -86,10 +86,12 @@
 
   // Проверка наличия и удаления предыдущего элемента
   function checkAndRemoveElm(selectorElm) {
-    var elm = document.querySelector(selectorElm);
-    if (elm) {
-      elm.remove();
-    }
+    var elm = document.querySelectorAll(selectorElm);
+    elm.forEach(function (v) {
+      if (v) {
+        v.remove();
+      }
+    });
   }
 
   window.util = {
