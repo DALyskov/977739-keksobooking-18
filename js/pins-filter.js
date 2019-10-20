@@ -1,9 +1,15 @@
 'use strict';
 
 (function () {
-  var QUANTITY_ADVERTISEMENT = 4;
+  var QUANTITY_ADVERTISEMENT = 5;
+
   var mapFilterType = window.map.mapFilter.querySelector('#housing-type');
   var mapFilterRoomQuantity = window.map.mapFilter.querySelector('#housing-rooms');
+
+  var getChangedPins = window.debounce(function () {
+    window.map.onLoadXhr(window.map.dataPins);
+  });
+
 
   var getRank = function (dataPin) {
     var rank = 0;
@@ -19,44 +25,15 @@
   };
 
   function filterPin() {
-    // window.map.addPin(QUANTITY_ADVERTISEMENT, window.map.dataPins);
-
-    // window.map.addPin(QUANTITY_ADVERTISEMENT, window.map.dataPins.filter(function (v) {
-    //   return getRank(v) === 1;
-    // }));
-
     var newData = window.map.dataPins.filter(function (v) {
       return getRank(v) === 2;
-    }).slice(0, 5);
-    console.log(window.map.dataPins);
-    console.log(newData);
-
+    }).slice(0, QUANTITY_ADVERTISEMENT);
     return newData;
   }
 
-  // function onRoomNumberInput(evt) {
-  //   var disabled = rooms[evt.target.value];
-  //   setDefaultOptions();
-  //   for (var i = 0; i < adFormGuestsQuantity.options.length; i++) {
-  //     var option = adFormGuestsQuantity.options[i];
-  //     if (disabled.includes(parseInt(option.value, 10))) {
-  //       option.disabled = true;
-  //     } else {
-  //       option.selected = true;
-  //     }
-  //   }
-  // }
 
-  // adFormAddress.value = Math.round(window.map.pinMain.offsetLeft + window.map.pinMain.offsetWidth / 2) + ', ' + Math.round(window.map.pinMain.offsetTop + window.map.pinMain.offsetHeight / 2);
-
-  mapFilterType.addEventListener('change', function () {
-    // console.log(window.map.mapFilterSelects[0].value);
-    window.map.onLoadXhr(window.map.dataPins);
-  });
-  mapFilterRoomQuantity.addEventListener('change', function () {
-    // console.log(window.map.mapFilterSelects[0].value);
-    window.map.onLoadXhr(window.map.dataPins);
-  });
+  mapFilterType.addEventListener('change', getChangedPins);
+  mapFilterRoomQuantity.addEventListener('change', getChangedPins);
 
   window.pinsFilter = {
     filterPin: filterPin,
