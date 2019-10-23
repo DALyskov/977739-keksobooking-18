@@ -11,7 +11,7 @@
   var pinMain = pinsSection.querySelector('.map__pin--main');
   var mapFilter = document.querySelector('.map__filters');
   var mapFilterSelects = mapFilter.querySelectorAll('select');
-  var mapFilterInputs = mapFilter.querySelectorAll('input');
+  var mapFilterFieldset = mapFilter.querySelectorAll('fieldset');
 
   function addPin(pinAmount, pins) {
     var template = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -30,12 +30,12 @@
   }
 
   function disableMapFilter() {
-    window.util.toggleEnableBlock(mapFilterSelects, mapFilterInputs, true);
+    window.util.toggleEnableBlock(mapFilterSelects, mapFilterFieldset, true);
   }
   disableMapFilter();
 
   function enableMapFilter() {
-    window.util.toggleEnableBlock(mapFilterSelects, mapFilterInputs, false);
+    window.util.toggleEnableBlock(mapFilterSelects, mapFilterFieldset, false);
   }
 
   function onLoadXhr(dataXhr) {
@@ -91,17 +91,21 @@
 
     window.form.adFormAddress.value = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2) + ', ' + Math.round(pinMain.offsetTop + pinMain.offsetHeight + 12);
     pinMain.removeEventListener('mousedown', enablePage);
-    pinMain.removeEventListener('keydown', changeKeyCode);
+    // pinMain.removeEventListener('keydown', checkKeyCode);
+    pinMain.removeEventListener('keydown', checkKeyCodeRunEnablePage);
   }
 
-  function changeKeyCode(evt) {
+  function checkKeyCode(cb, evt) {
     if (evt.keyCode === ENTER_KEYCODE || evt.keyCode === SPACE_KEYCODE) {
-      enablePage();
+      // enablePage();
+      cb();
     }
   }
+  var checkKeyCodeRunEnablePage = checkKeyCode.bind(null, enablePage);
 
   pinMain.addEventListener('mousedown', enablePage);
-  pinMain.addEventListener('keydown', changeKeyCode);
+  // pinMain.addEventListener('keydown', checkKeyCode);
+  pinMain.addEventListener('keydown', checkKeyCodeRunEnablePage);
 
   window.map = {
     mapSection: mapSection,

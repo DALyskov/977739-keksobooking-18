@@ -4,8 +4,7 @@
   var adForm = document.querySelector('.ad-form');
   var adFormRoomNumber = adForm.querySelector('#room_number');
   var adFormGuestsQuantity = adForm.querySelector('#capacity');
-  var adFormSelects = adForm.querySelectorAll('select');
-  var adFormInputs = adForm.querySelectorAll('input');
+  var adFormFieldset = adForm.querySelectorAll('fieldset');
   var adFormAddress = adForm.querySelector('#address');
 
   var rooms = {
@@ -16,12 +15,12 @@
   };
 
   function disableAdForm() {
-    window.util.toggleEnableBlock(adFormSelects, adFormInputs, true);
+    window.util.toggleEnableBlock([], adFormFieldset, true);
   }
   disableAdForm();
 
   function enableAdForm() {
-    window.util.toggleEnableBlock(adFormSelects, adFormInputs, false);
+    window.util.toggleEnableBlock([], adFormFieldset, false);
   }
 
   function setDefaultOptions() {

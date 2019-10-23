@@ -65,11 +65,11 @@
     return arr;
   }
   // Функция разблокировки inputs
-  function toggleEnableBlock(arrSelects, arrInputs, toggle) {
+  function toggleEnableBlock(arrSelects, arrFieldset, toggle) {
     arrSelects.forEach(function (v) {
       v.disabled = toggle;
     });
-    arrInputs.forEach(function (v) {
+    arrFieldset.forEach(function (v) {
       v.disabled = toggle;
     });
   }
