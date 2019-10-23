@@ -102,5 +102,6 @@
     toggleEnableBlock: toggleEnableBlock,
     onPopupEscPress: onPopupEscPress,
     checkAndRemoveElm: checkAndRemoveElm,
+    closePopup: closePopup,
   };
 })();

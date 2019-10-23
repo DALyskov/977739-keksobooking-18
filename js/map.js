@@ -51,9 +51,15 @@
         window.util.checkAndRemoveElm('.map__card');
         window.card.addСard(advertisement);
         var card = document.querySelector('.map__card');
-        document.addEventListener('keydown', function close(evt) {
+        var cardEscButton = card.querySelector('.popup__close');
+        function onMapKeydown(evt) {
           window.util.onPopupEscPress(evt, card);
-          document.removeEventListener('keydown', close);
+          document.removeEventListener('keydown', onMapKeydown);
+        }
+        document.addEventListener('keydown', onMapKeydown);
+        cardEscButton.addEventListener('click', function () {
+          window.util.closePopup(card);
+          document.removeEventListener('keydown', onMapKeydown);
         });
       });
     }
@@ -90,22 +96,23 @@
     window.backend.load(onLoadXhr, onErrorXhr);
 
     window.form.adFormAddress.value = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2) + ', ' + Math.round(pinMain.offsetTop + pinMain.offsetHeight + 12);
-    pinMain.removeEventListener('mousedown', enablePage);
-    // pinMain.removeEventListener('keydown', checkKeyCode);
-    pinMain.removeEventListener('keydown', checkKeyCodeRunEnablePage);
+    pinMain.removeEventListener('mousedown', onPinMainMousedown);
+    pinMain.removeEventListener('keydown', onPinMainKeydown);
   }
 
   function checkKeyCode(cb, evt) {
     if (evt.keyCode === ENTER_KEYCODE || evt.keyCode === SPACE_KEYCODE) {
-      // enablePage();
       cb();
     }
   }
-  var checkKeyCodeRunEnablePage = checkKeyCode.bind(null, enablePage);
+  var onPinMainKeydown = checkKeyCode.bind(null, enablePage);
 
-  pinMain.addEventListener('mousedown', enablePage);
-  // pinMain.addEventListener('keydown', checkKeyCode);
-  pinMain.addEventListener('keydown', checkKeyCodeRunEnablePage);
+  function onPinMainMousedown() {
+    enablePage();
+  }
+
+  pinMain.addEventListener('mousedown', onPinMainMousedown);
+  pinMain.addEventListener('keydown', onPinMainKeydown);
 
   window.map = {
     mapSection: mapSection,

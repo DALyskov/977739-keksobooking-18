@@ -6,7 +6,7 @@
   var mapFilterType = window.map.mapFilter.querySelector('#housing-type');
   var mapFilterRoomQuantity = window.map.mapFilter.querySelector('#housing-rooms');
 
-  var getChangedPins = window.debounce(function () {
+  var changeFilterPin = window.debounce(function () {
     window.map.onLoadXhr(window.map.dataPins);
   });
 
@@ -32,8 +32,8 @@
   }
 
 
-  mapFilterType.addEventListener('change', getChangedPins);
-  mapFilterRoomQuantity.addEventListener('change', getChangedPins);
+  mapFilterType.addEventListener('change', changeFilterPin);
+  mapFilterRoomQuantity.addEventListener('change', changeFilterPin);
 
   window.pinsFilter = {
     filterPin: filterPin,
