@@ -1,7 +1,10 @@
 'use strict';
 
 (function () {
-  // var popapCharacterHandler = window.map.pinMain.querySelector('.upload');
+  function setadFormAddress() {
+    window.form.adFormAddress.value = Math.round(window.map.pinMain.offsetLeft + window.map.pinMain.offsetWidth / 2) + ', ' + Math.round(window.map.pinMain.offsetTop + window.map.pinMain.offsetHeight + 12);
+  }
+
   window.map.pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
@@ -9,8 +12,9 @@
       x: evt.clientX,
       y: evt.clientY
     };
-
     var draggedMarker = false;
+
+    setadFormAddress();
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
@@ -29,7 +33,7 @@
       window.map.pinMain.style.left = (window.map.pinMain.offsetLeft - shift.x) + 'px';
       window.map.pinMain.style.top = (window.map.pinMain.offsetTop - shift.y) + 'px';
 
-      window.form.adFormAddress.value = Math.round(window.map.pinMain.offsetLeft + window.map.pinMain.offsetWidth / 2) + ', ' + Math.round(window.map.pinMain.offsetTop + window.map.pinMain.offsetHeight + 12);
+      setadFormAddress();
     };
 
     var onMouseUp = function (upEvt) {
