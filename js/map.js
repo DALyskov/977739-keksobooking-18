@@ -95,7 +95,6 @@
 
     window.backend.load(onLoadXhr, onErrorXhr);
 
-    window.form.adFormAddress.value = Math.round(pinMain.offsetLeft + pinMain.offsetWidth / 2) + ', ' + Math.round(pinMain.offsetTop + pinMain.offsetHeight + 12);
     pinMain.removeEventListener('mousedown', onPinMainMousedown);
     pinMain.removeEventListener('keydown', onPinMainKeydown);
   }
