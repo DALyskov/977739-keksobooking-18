@@ -3,7 +3,6 @@
 (function () {
   var adForm = document.querySelector('.ad-form');
   var adFormGuestsQuantity = adForm.querySelector('#capacity');
-  var adFormFieldset = adForm.querySelectorAll('fieldset');
   var adFormAddress = adForm.querySelector('#address');
   var adFormPrice = adForm.querySelector('#price');
   var timein = adForm.querySelector('#timein');
@@ -22,15 +21,6 @@
     100: [1, 2, 3]
   };
 
-  // function disableAdForm() {
-  //   window.util.toggleEnableBlock([], adFormFieldset, true);
-  // }
-  // disableAdForm();
-
-  // function enableAdForm() { /* возможно стоит перенести*/
-  //   window.util.toggleEnableBlock([], adFormFieldset, false);
-  // }
-
   function setDefaultOptions() {
     for (var i = 0; i < adFormGuestsQuantity.options.length; i++) {
       adFormGuestsQuantity.options[i].disabled = false;
@@ -39,7 +29,7 @@
   }
 
   adFormAddress.readOnly = true;
-  adFormAddress.value = Math.round(window.map.pinMain.offsetLeft + window.map.pinMain.offsetWidth / 2) + ', ' + Math.round(window.map.pinMain.offsetTop + window.map.pinMain.offsetHeight / 2);
+  adFormAddress.value = Math.round(window.page.pinMain.offsetLeft + window.page.pinMain.offsetWidth / 2) + ', ' + Math.round(window.page.pinMain.offsetTop + window.page.pinMain.offsetHeight / 2);
 
   function onAdFormInput(evt) {
     var target = evt.target;
@@ -142,21 +132,18 @@
   });
 
   function onSaveXhr() {
-    console.log('run');
-    window.disablePage.disablePage();
-    window.map.pinMain.addEventListener('mousedown', window.disablePage.onPinMainMousedown);
-    window.map.pinMain.addEventListener('keydown', window.disablePage.onPinMainKeydown);
+    window.page.disablePage();
+    window.page.pinMain.addEventListener('mousedown', window.page.onPinMainMousedown);
+    window.page.pinMain.addEventListener('keydown', window.page.onPinMainKeydown);
   }
 
   adForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(adForm), onSaveXhr, window.map.onErrorXhr);
+    window.backend.save(new FormData(adForm), onSaveXhr, window.inquiries.onErrorXhr);
     evt.preventDefault();
   });
 
   window.form = {
     adForm: adForm,
     adFormAddress: adFormAddress,
-    // disableAdForm: disableAdForm,
-    // enableAdForm: enableAdForm,
   };
 })();

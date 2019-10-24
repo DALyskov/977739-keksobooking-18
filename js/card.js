@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var cardМarker = window.map.mapSection.querySelector('.map__filters-container');
+  var cardМarker = window.page.mapSection.querySelector('.map__filters-container');
 
   var typeListMap = {
     palace: 'Дворец',
