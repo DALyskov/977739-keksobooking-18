@@ -1,8 +1,14 @@
 'use strict';
 
 (function () {
+  var pinMainOffsetX = window.map.pinMain.offsetWidth / 2;
+  var pinMainOffsetY = window.map.pinMain.offsetHeight + 12;
+  var pinMainMinX = -pinMainOffsetX;
+  var PIN_MAIN_MIN_Y = 130;
+  var PIN_MAIN_MAX_Y = 630;
+
   function setadFormAddress() {
-    window.form.adFormAddress.value = Math.round(window.map.pinMain.offsetLeft + window.map.pinMain.offsetWidth / 2) + ', ' + Math.round(window.map.pinMain.offsetTop + window.map.pinMain.offsetHeight + 12);
+    window.form.adFormAddress.value = Math.round(window.map.pinMain.offsetLeft + pinMainOffsetX) + ', ' + Math.round(window.map.pinMain.offsetTop + pinMainOffsetY);
   }
 
   window.map.pinMain.addEventListener('mousedown', function (evt) {
@@ -19,19 +25,26 @@
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       draggedMarker = true;
+      var pinMainMaxX = window.map.mapSection.offsetWidth - pinMainOffsetX;
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
         y: startCoords.y - moveEvt.clientY
       };
-
       startCoords = {
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
 
-      window.map.pinMain.style.left = (window.map.pinMain.offsetLeft - shift.x) + 'px';
-      window.map.pinMain.style.top = (window.map.pinMain.offsetTop - shift.y) + 'px';
+      var pinMainX = window.map.pinMain.offsetLeft - shift.x;
+      var pinMainY = window.map.pinMain.offsetTop - shift.y;
+
+      if (pinMainX >= pinMainMinX && pinMainX <= pinMainMaxX) {
+        window.map.pinMain.style.left = pinMainX + 'px';
+      }
+      if (pinMainY >= PIN_MAIN_MIN_Y && pinMainY <= PIN_MAIN_MAX_Y) {
+        window.map.pinMain.style.top = pinMainY + 'px';
+      }
 
       setadFormAddress();
     };

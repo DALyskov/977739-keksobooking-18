@@ -46,7 +46,6 @@
     if (lengthNum > 1) {
       newArr.forEach(function (v, j) {
         newArr[j] = padNum(newArr[j], lengthNum);
-        // v = padNum(v, lengthNum);
       });
     }
     return newArr;
