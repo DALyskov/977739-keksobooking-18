@@ -141,9 +141,22 @@
     onAdFormChange(evt);
   });
 
+  function onSaveXhr() {
+    console.log('run');
+    window.map.disablePage();
+    // window.map.pinMain.addEventListener('mousedown', window.map.onPinMainMousedown);
+    // window.map.pinMain.addEventListener('keydown', window.map.onPinMainKeydown);
+  }
+
+  // adForm.addEventListener('submit', function (evt) {
+  //   window.backend.save(new FormData(adForm), onSaveXhr, null);
+  //   evt.preventDefault();
+  // });
+
   window.form = {
     adForm: adForm,
     adFormAddress: adFormAddress,
-    enableAdForm: enableAdForm
+    disableAdForm: disableAdForm,
+    enableAdForm: enableAdForm,
   };
 })();

@@ -78,7 +78,7 @@
       closePopup(domElement);
     }
   }
-  // Фун закрытия попапа
+  // Фун. закрытия попапа
   function closePopup(domElement) {
     domElement.remove();
   }

@@ -38,6 +38,13 @@
     window.util.toggleEnableBlock(mapFilterSelects, mapFilterFieldset, false);
   }
 
+  function disablePage() {
+    mapSection.classList.add('map--faded');
+    window.form.adForm.classList.add('ad-form--disabled');
+    disableMapFilter();
+    window.form.disableAdForm();
+  }
+
   function onLoadXhr(dataXhr) {
     window.map.dataPins = dataXhr;
     var filteredData = window.pinsFilter.filterPin();
@@ -95,8 +102,8 @@
 
     window.backend.load(onLoadXhr, onErrorXhr);
 
-    pinMain.removeEventListener('mousedown', onPinMainMousedown);
-    pinMain.removeEventListener('keydown', onPinMainKeydown);
+    // pinMain.removeEventListener('mousedown', onPinMainMousedown);
+    // pinMain.removeEventListener('keydown', onPinMainKeydown);
   }
 
   function checkKeyCode(cb, evt) {
@@ -107,6 +114,7 @@
   var onPinMainKeydown = checkKeyCode.bind(null, enablePage);
 
   function onPinMainMousedown() {
+    console.log('run2');
     enablePage();
   }
 
@@ -119,5 +127,8 @@
     mapFilterSelects: mapFilterSelects,
     mapFilter: mapFilter,
     onLoadXhr: onLoadXhr,
+    disableMapFilter: disableMapFilter,
+    disablePage: disablePage,
+    onPinMainKeydown: onPinMainKeydown,
   };
 })();
