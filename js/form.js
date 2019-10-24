@@ -22,14 +22,14 @@
     100: [1, 2, 3]
   };
 
-  function disableAdForm() {
-    window.util.toggleEnableBlock([], adFormFieldset, true);
-  }
-  disableAdForm();
+  // function disableAdForm() {
+  //   window.util.toggleEnableBlock([], adFormFieldset, true);
+  // }
+  // disableAdForm();
 
-  function enableAdForm() {
-    window.util.toggleEnableBlock([], adFormFieldset, false);
-  }
+  // function enableAdForm() { /* возможно стоит перенести*/
+  //   window.util.toggleEnableBlock([], adFormFieldset, false);
+  // }
 
   function setDefaultOptions() {
     for (var i = 0; i < adFormGuestsQuantity.options.length; i++) {
@@ -143,20 +143,20 @@
 
   function onSaveXhr() {
     console.log('run');
-    window.map.disablePage();
-    // window.map.pinMain.addEventListener('mousedown', window.map.onPinMainMousedown);
-    // window.map.pinMain.addEventListener('keydown', window.map.onPinMainKeydown);
+    window.disablePage.disablePage();
+    window.map.pinMain.addEventListener('mousedown', window.disablePage.onPinMainMousedown);
+    window.map.pinMain.addEventListener('keydown', window.disablePage.onPinMainKeydown);
   }
 
-  // adForm.addEventListener('submit', function (evt) {
-  //   window.backend.save(new FormData(adForm), onSaveXhr, null);
-  //   evt.preventDefault();
-  // });
+  adForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(adForm), onSaveXhr, window.map.onErrorXhr);
+    evt.preventDefault();
+  });
 
   window.form = {
     adForm: adForm,
     adFormAddress: adFormAddress,
-    disableAdForm: disableAdForm,
-    enableAdForm: enableAdForm,
+    // disableAdForm: disableAdForm,
+    // enableAdForm: enableAdForm,
   };
 })();
