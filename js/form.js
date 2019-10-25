@@ -1,12 +1,14 @@
 'use strict';
 
 (function () {
-  var adForm = document.querySelector('.ad-form');
-  var adFormGuestsQuantity = adForm.querySelector('#capacity');
-  var adFormAddress = adForm.querySelector('#address');
-  var adFormPrice = adForm.querySelector('#price');
-  var timein = adForm.querySelector('#timein');
-  var timeout = adForm.querySelector('#timeout');
+  var adFormGuestsQuantity = window.page.adForm.querySelector('#capacity');
+  var adFormPrice = window.page.adForm.querySelector('#price');
+  var timein = window.page.adForm.querySelector('#timein');
+  var timeout = window.page.adForm.querySelector('#timeout');
+  var adFormButtonReset = window.page.adForm.querySelector('.ad-form__reset');
+  var adFormButtonSubmit = window.page.adForm.querySelector('.ad-form__submit');
+  var adFormInputs = window.page.adForm.querySelectorAll('input');
+  var adFormRoom = window.page.adForm.querySelector('#room_number');
 
   var type = {
     bungalo: 0,
@@ -28,8 +30,21 @@
     }
   }
 
-  adFormAddress.readOnly = true;
-  adFormAddress.value = Math.round(window.page.pinMain.offsetLeft + window.page.pinMain.offsetWidth / 2) + ', ' + Math.round(window.page.pinMain.offsetTop + window.page.pinMain.offsetHeight / 2);
+  function validationRoomCapacity() {
+    var disabled = rooms[adFormRoom.options[adFormRoom.selectedIndex].value];
+    setDefaultOptions();
+    for (var i = 0; i < adFormGuestsQuantity.options.length; i++) {
+      var quantityOption = adFormGuestsQuantity.options[i];
+      if (disabled.includes(parseInt(quantityOption.value, 10))) {
+        quantityOption.disabled = true;
+      } else {
+        quantityOption.selected = true;
+      }
+    }
+  }
+  validationRoomCapacity();
+
+  window.page.adFormAddress.readOnly = true;
 
   function onAdFormInput(evt) {
     var target = evt.target;
@@ -38,6 +53,7 @@
       switch (true) {
         case target.validity.valueMissing:
           target.setCustomValidity('Добавьте заголовок объявления');
+          target.style.boxShadow = '0 0 2px 2px red';
           break;
         case target.validity.tooShort:
           target.setCustomValidity('Заголовок объявления не должен быть меньше 30 символов');
@@ -50,6 +66,7 @@
           break;
         default:
           target.setCustomValidity('');
+          target.style.boxShadow = '';
       }
     }
 
@@ -69,6 +86,7 @@
           break;
         default:
           target.setCustomValidity('');
+          target.style.boxShadow = '';
       }
     }
 
@@ -95,19 +113,6 @@
       elm.value = target.value;
     }
 
-    function validationRoomCapacity() {
-      var disabled = rooms[target.value];
-      setDefaultOptions();
-      for (var i = 0; i < adFormGuestsQuantity.options.length; i++) {
-        var quantityOption = adFormGuestsQuantity.options[i];
-        if (disabled.includes(parseInt(quantityOption.value, 10))) {
-          quantityOption.disabled = true;
-        } else {
-          quantityOption.selected = true;
-        }
-      }
-    }
-
     switch (target.name) {
       case 'type':
         validationTypePrice();
@@ -124,26 +129,36 @@
     }
   }
 
-  adForm.addEventListener('input', function (evt) {
+  window.page.adForm.addEventListener('input', function (evt) {
     onAdFormInput(evt);
   });
-  adForm.addEventListener('change', function (evt) {
+  window.page.adForm.addEventListener('change', function (evt) {
     onAdFormChange(evt);
   });
-
-  function onSaveXhr() {
-    window.page.disablePage();
-    window.page.pinMain.addEventListener('mousedown', window.page.onPinMainMousedown);
-    window.page.pinMain.addEventListener('keydown', window.page.onPinMainKeydown);
-  }
-
-  adForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(adForm), onSaveXhr, window.inquiries.onErrorXhr);
+  window.page.adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
+    window.backend.save(new FormData(window.page.adForm), window.inquiries.onSaveXhr, window.inquiries.onErrorXhr);
   });
 
-  window.form = {
-    adForm: adForm,
-    adFormAddress: adFormAddress,
-  };
+  function onAdFormButtonSubmitClick() {
+    for (var i = 0; i < adFormInputs.length; i++) {
+      var input = adFormInputs[i];
+      if (input.checkValidity() === false) {
+        input.style.boxShadow = '0 0 2px 2px red';
+        input.checkValidity();
+      }
+    }
+  }
+  var onAdFormButtonSubmitKeydown = window.util.checkKeyCode.bind(null, onAdFormButtonSubmitClick);
+  adFormButtonSubmit.addEventListener('click', onAdFormButtonSubmitClick);
+  adFormButtonSubmit.addEventListener('keydown', onAdFormButtonSubmitKeydown);
+
+  function onAdFormButtonResetClick(evt) {
+    evt.preventDefault();
+    window.page.adForm.reset();
+    window.page.setAdFormAddress(window.page.pinMainOffsetYMoution);
+  }
+  var onPinMainKeydown = window.util.checkKeyCode.bind(null, onAdFormButtonResetClick);
+  adFormButtonReset.addEventListener('click', onAdFormButtonResetClick);  
+  adFormButtonReset.addEventListener('keydown', onPinMainKeydown);
 })();

@@ -38,18 +38,18 @@
 
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
-        onLoad(xhr.response);
+        onLoad('Ваше объявление \n' + xhr.response.title + '\n сохранено');
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText, reasonCallSave);
       }
     });
 
     xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения');
+      onError('Произошла ошибка соединения', reasonCallSave);
     });
 
     xhr.addEventListener('timeout', function () {
-      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс', reasonCallSave);
     });
 
     xhr.timeout = 1000;

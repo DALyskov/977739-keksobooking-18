@@ -1,15 +1,9 @@
 'use strict';
 
 (function () {
-  var pinMainOffsetX = window.page.pinMain.offsetWidth / 2;
-  var pinMainOffsetY = window.page.pinMain.offsetHeight + 12;
-  var pinMainMinX = -pinMainOffsetX;
+  var pinMainMinX = -window.page.pinMainOffsetX;
   var PIN_MAIN_MIN_Y = 130;
   var PIN_MAIN_MAX_Y = 630;
-
-  function setadFormAddress() {
-    window.form.adFormAddress.value = Math.round(window.page.pinMain.offsetLeft + pinMainOffsetX) + ', ' + Math.round(window.page.pinMain.offsetTop + pinMainOffsetY);
-  }
 
   window.page.pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -20,12 +14,12 @@
     };
     var draggedMarker = false;
 
-    setadFormAddress();
+    window.page.setAdFormAddress(window.page.pinMainOffsetYMoution);
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       draggedMarker = true;
-      var pinMainMaxX = window.page.mapSection.offsetWidth - pinMainOffsetX;
+      var pinMainMaxX = window.page.mapSection.offsetWidth - window.page.pinMainOffsetX;
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
@@ -46,7 +40,7 @@
         window.page.pinMain.style.top = pinMainY + 'px';
       }
 
-      setadFormAddress();
+      window.page.setAdFormAddress(window.page.pinMainOffsetYMoution);
     };
 
     var onMouseUp = function (upEvt) {
