@@ -1,17 +1,11 @@
 'use strict';
 
 (function () {
-  var pinMainOffsetX = window.map.pinMain.offsetWidth / 2;
-  var pinMainOffsetY = window.map.pinMain.offsetHeight + 12;
-  var pinMainMinX = -pinMainOffsetX;
+  var pinMainMinX = -window.page.pinMainOffsetX;
   var PIN_MAIN_MIN_Y = 130;
   var PIN_MAIN_MAX_Y = 630;
 
-  function setadFormAddress() {
-    window.form.adFormAddress.value = Math.round(window.map.pinMain.offsetLeft + pinMainOffsetX) + ', ' + Math.round(window.map.pinMain.offsetTop + pinMainOffsetY);
-  }
-
-  window.map.pinMain.addEventListener('mousedown', function (evt) {
+  window.page.pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
     var startCoords = {
@@ -20,12 +14,12 @@
     };
     var draggedMarker = false;
 
-    setadFormAddress();
+    window.page.setAdFormAddress(window.page.pinMainOffsetYMoution);
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       draggedMarker = true;
-      var pinMainMaxX = window.map.mapSection.offsetWidth - pinMainOffsetX;
+      var pinMainMaxX = window.page.mapSection.offsetWidth - window.page.pinMainOffsetX;
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
@@ -36,17 +30,17 @@
         y: moveEvt.clientY
       };
 
-      var pinMainX = window.map.pinMain.offsetLeft - shift.x;
-      var pinMainY = window.map.pinMain.offsetTop - shift.y;
+      var pinMainX = window.page.pinMain.offsetLeft - shift.x;
+      var pinMainY = window.page.pinMain.offsetTop - shift.y;
 
       if (pinMainX >= pinMainMinX && pinMainX <= pinMainMaxX) {
-        window.map.pinMain.style.left = pinMainX + 'px';
+        window.page.pinMain.style.left = pinMainX + 'px';
       }
       if (pinMainY >= PIN_MAIN_MIN_Y && pinMainY <= PIN_MAIN_MAX_Y) {
-        window.map.pinMain.style.top = pinMainY + 'px';
+        window.page.pinMain.style.top = pinMainY + 'px';
       }
 
-      setadFormAddress();
+      window.page.setAdFormAddress(window.page.pinMainOffsetYMoution);
     };
 
     var onMouseUp = function (upEvt) {
@@ -58,9 +52,9 @@
       if (draggedMarker) {
         var onClickPreventDefault = function (clickEvt) {
           clickEvt.preventDefault();
-          window.map.pinMain.removeEventListener('click', onClickPreventDefault);
+          window.page.pinMain.removeEventListener('click', onClickPreventDefault);
         };
-        window.map.pinMain.addEventListener('click', onClickPreventDefault);
+        window.page.pinMain.addEventListener('click', onClickPreventDefault);
       }
     };
 

@@ -2,6 +2,8 @@
 
 (function () {
   var ESC_KEYCODE = 27;
+  var ENTER_KEYCODE = 13;
+  var SPACE_KEYCODE = 32;
 
   // функция выборки случайного элемента из массива
   function getElmFromArr(arr) {
@@ -78,14 +80,20 @@
       closePopup(domElement);
     }
   }
-  // Фун закрытия попапа
+  // Фун. проверки соответствия кода клавиш enter и space
+  function checkKeyCode(cb, evt) {
+    if (evt.keyCode === ENTER_KEYCODE || evt.keyCode === SPACE_KEYCODE) {
+      cb(evt);
+    }
+  }
+  // Фун. закрытия попапа
   function closePopup(domElement) {
     domElement.remove();
   }
 
   // Проверка наличия и удаления предыдущего элемента
-  function checkAndRemoveElm(selectorElm) {
-    var elm = document.querySelectorAll(selectorElm);
+  function checkAndRemoveElm(parentElm, selectorElm) {
+    var elm = parentElm.querySelectorAll(selectorElm);
     elm.forEach(function (v) {
       if (v) {
         v.remove();
@@ -100,6 +108,7 @@
     getArrStringWithIndex: getArrStringWithIndex,
     toggleEnableBlock: toggleEnableBlock,
     onPopupEscPress: onPopupEscPress,
+    checkKeyCode: checkKeyCode,
     checkAndRemoveElm: checkAndRemoveElm,
     closePopup: closePopup,
   };
