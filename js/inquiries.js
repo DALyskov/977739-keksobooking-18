@@ -71,7 +71,7 @@
       buttonRepeat.addEventListener('click', function () {
         window.util.closePopup(buttonRepeat);
       });
-    }    
+    }
   }
 
   function onSaveXhr(successMessage) {

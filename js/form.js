@@ -159,6 +159,6 @@
     window.page.setAdFormAddress(window.page.pinMainOffsetYMoution);
   }
   var onPinMainKeydown = window.util.checkKeyCode.bind(null, onAdFormButtonResetClick);
-  adFormButtonReset.addEventListener('click', onAdFormButtonResetClick);  
+  adFormButtonReset.addEventListener('click', onAdFormButtonResetClick);
   adFormButtonReset.addEventListener('keydown', onPinMainKeydown);
 })();
