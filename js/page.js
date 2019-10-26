@@ -7,6 +7,7 @@
   var mapSection = document.querySelector('.map');
   var pinsSection = mapSection.querySelector('.map__pins');
   var pinMain = pinsSection.querySelector('.map__pin--main');
+  var pinMainSourceY = pinMain.offsetTop;
   var mapFilter = document.querySelector('.map__filters');
   var mapFilterSelects = mapFilter.querySelectorAll('select');
   var mapFilterFieldset = mapFilter.querySelectorAll('fieldset');
@@ -57,6 +58,8 @@
   function disablePage() {
     mapSection.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
+    pinMain.style.left = (50 - pinMainOffsetX / pinsSection.offsetWidth * 100) + '%';
+    pinMain.style.top = pinMainSourceY + 'px';
     removePins();
     disableMapFilter();
     disableAdForm();

@@ -6,6 +6,7 @@
     var filteredData = window.pinsFilter.filterPin();
 
     window.util.checkAndRemoveElm(window.page.mapSection, '.map__pin--new');
+    window.util.checkAndRemoveElm(window.page.mapSection, '.map__card');
     window.page.addPin(filteredData.length, filteredData);
 
     var pins = window.page.pinsSection.querySelectorAll('.map__pin--new');
