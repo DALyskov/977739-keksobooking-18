@@ -16,15 +16,26 @@
       pins[i].addEventListener('click', function () {
         window.util.checkAndRemoveElm(window.page.mapSection, '.map__card');
         window.card.addСard(advertisement);
+        pins.forEach(function (v) {
+          v.classList.remove('map__pin--active');
+        });
+        this.classList.add('map__pin--active');
+
         var card = document.querySelector('.map__card');
         var cardEscButton = card.querySelector('.popup__close');
         function onMapKeydown(evt) {
           window.util.onPopupEscPress(evt, card);
+          pins.forEach(function (v) {
+            v.classList.remove('map__pin--active');
+          });
           document.removeEventListener('keydown', onMapKeydown);
         }
         document.addEventListener('keydown', onMapKeydown);
         cardEscButton.addEventListener('click', function () {
-          window.util.closePopup(card);
+          // window.util.closePopup(card);
+          // pins.forEach(function (v) {
+          //   v.classList.remove('map__pin--active');
+          // });
           document.removeEventListener('keydown', onMapKeydown);
         });
       });

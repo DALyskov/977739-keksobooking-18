@@ -60,7 +60,7 @@
   function filterPin() {
     var arrChecked = checkCheckbox();
     var newData = window.inquiries.dataPins.filter(function (v) {
-      return getRank(v, arrChecked) === (4 + arrChecked.length);
+      return (v.offer) && getRank(v, arrChecked) === (4 + arrChecked.length);
     }).slice(0, QUANTITY_ADVERTISEMENT);
     return newData;
   }

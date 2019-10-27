@@ -119,8 +119,8 @@
     mapFilterSelects: mapFilterSelects,
     disablePage: disablePage,
     addPin: addPin,
-    onPinMainMousedown: onPinMainMousedown, /* check and delete */
-    onPinMainKeydown: onPinMainKeydown, /* check and delete */
+    // onPinMainMousedown: onPinMainMousedown, /* check and delete */
+    // onPinMainKeydown: onPinMainKeydown, /* check and delete */
     pinMainOffsetX: pinMainOffsetX,
     pinMainOffsetYMoution: pinMainOffsetYMoution,
     setAdFormAddress: setAdFormAddress,
