@@ -38,7 +38,7 @@
 
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
-        onLoad('Ваше объявление \n' + xhr.response.title + '\n сохранено');
+        onLoad('Ваше объявление \n' + xhr.response.title + '\n сохранено', xhr);
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText, reasonCallSave);
       }

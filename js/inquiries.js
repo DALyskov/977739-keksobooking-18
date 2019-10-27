@@ -75,11 +75,11 @@
     }
   }
 
-  function onSaveXhr(successMessage) {
+  function onSaveXhr(successMessage, xhr) {
     window.page.disablePage();
     window.page.pinMain.addEventListener('mousedown', window.page.onPinMainMousedown);
     window.page.pinMain.addEventListener('keydown', window.page.onPinMainKeydown);
-
+    console.dir(xhr);
     openCloseMessagePopup(successMessage, true, 'success');
   }
 

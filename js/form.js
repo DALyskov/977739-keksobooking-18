@@ -9,6 +9,7 @@
   var adFormButtonSubmit = window.page.adForm.querySelector('.ad-form__submit');
   var adFormInputs = window.page.adForm.querySelectorAll('input');
   var adFormRoom = window.page.adForm.querySelector('#room_number');
+  var adFormPreviewSrc = window.addImg.adFormPreview.src;
 
   var type = {
     bungalo: 0,
@@ -140,6 +141,8 @@
     window.backend.save(new FormData(window.page.adForm), window.inquiries.onSaveXhr, window.inquiries.onErrorXhr);
   });
 
+  var adFormFileChooser = window.page.adForm.querySelector('.ad-form-header__input'); /* delete */
+
   function onAdFormButtonSubmitClick() {
     for (var i = 0; i < adFormInputs.length; i++) {
       var input = adFormInputs[i];
@@ -148,6 +151,7 @@
         input.checkValidity();
       }
     }
+    console.dir(adFormFileChooser);
   }
   var onAdFormButtonSubmitKeydown = window.util.checkKeyCode.bind(null, onAdFormButtonSubmitClick);
   adFormButtonSubmit.addEventListener('click', onAdFormButtonSubmitClick);
@@ -156,6 +160,8 @@
   function onAdFormButtonResetClick(evt) {
     evt.preventDefault();
     window.page.adForm.reset();
+    window.addImg.adFormPreview.src = adFormPreviewSrc;
+    window.addImg.adFormFoto.innerHTML = '';
     window.page.setAdFormAddress(window.page.pinMainOffsetYMoution);
   }
   var onPinMainKeydown = window.util.checkKeyCode.bind(null, onAdFormButtonResetClick);
