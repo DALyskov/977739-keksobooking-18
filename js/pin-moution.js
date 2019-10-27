@@ -2,8 +2,8 @@
 
 (function () {
   var pinMainMinX = -window.page.pinMainOffsetX;
-  var PIN_MAIN_MIN_Y = 130;
-  var PIN_MAIN_MAX_Y = 630;
+  var PIN_MAIN_MIN_Y = 130 - window.page.pinMain.offsetHeight - 12; /* не const */
+  var PIN_MAIN_MAX_Y = 630 - window.page.pinMain.offsetHeight - 12;
 
   window.page.pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();

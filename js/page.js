@@ -16,8 +16,12 @@
   var pinMainOffsetYStart = pinMain.offsetHeight / 2;
 
   var adForm = document.querySelector('.ad-form');
-  var adFormFieldset = adForm.querySelectorAll('fieldset');
+  var adFormFieldsets = adForm.querySelectorAll('fieldset');
   var adFormAddress = adForm.querySelector('#address');
+  var adFormInputs = adForm.querySelectorAll('input');
+  var adFormPreview = adForm.querySelector('.ad-form-header__preview img');
+  var adFormFoto = adForm.querySelector('.ad-form__photo');
+  var adFormPreviewSrc = adFormPreview.src;
 
   function addPin(pinAmount, pins) {
     var template = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -51,7 +55,14 @@
 
   function disableAdForm() {
     adForm.reset();
-    window.util.toggleEnableBlock([], adFormFieldset, true);
+    window.util.toggleEnableBlock([], adFormFieldsets, true);
+
+    adFormInputs.forEach(function (v) {
+      v.style.boxShadow = '';
+    });
+    adFormPreview.src = adFormPreviewSrc;
+    adFormFoto.innerHTML = '';
+
     setAdFormAddress(pinMainOffsetYStart);
   }
 
@@ -63,6 +74,8 @@
     removePins();
     disableMapFilter();
     disableAdForm();
+    pinMain.addEventListener('mousedown', onPinMainMousedown);
+    pinMain.addEventListener('keydown', onPinMainKeydown);
   }
   disablePage();
 
@@ -71,8 +84,13 @@
   }
 
   function enableAdForm() {
-    window.util.toggleEnableBlock([], adFormFieldset, false);
+    window.util.toggleEnableBlock([], adFormFieldsets, false);
   }
+
+  function onPinMainMousedown() {
+    enablePage();
+  }
+  var onPinMainKeydown = window.util.checkKeyCode.bind(null, enablePage);
 
   function enablePage() {
     mapSection.classList.remove('map--faded');
@@ -86,26 +104,23 @@
     pinMain.removeEventListener('keydown', onPinMainKeydown);
   }
 
-  function onPinMainMousedown() {
-    enablePage();
-  }
-  var onPinMainKeydown = window.util.checkKeyCode.bind(null, enablePage);
-
-  pinMain.addEventListener('mousedown', onPinMainMousedown);
-  pinMain.addEventListener('keydown', onPinMainKeydown);
-
   window.page = {
     mapSection: mapSection,
     pinsSection: pinsSection,
     pinMain: pinMain,
     adForm: adForm,
     adFormAddress: adFormAddress,
+    adFormFieldsets: adFormFieldsets,
+    adFormInputs: adFormInputs,
+    adFormPreview: adFormPreview,
+    adFormFoto: adFormFoto,
+    adFormPreviewSrc: adFormPreviewSrc,
     mapFilter: mapFilter,
     mapFilterSelects: mapFilterSelects,
     disablePage: disablePage,
     addPin: addPin,
-    onPinMainMousedown: onPinMainMousedown,
-    onPinMainKeydown: onPinMainKeydown,
+    onPinMainMousedown: onPinMainMousedown, /* check and delete */
+    onPinMainKeydown: onPinMainKeydown, /* check and delete */
     pinMainOffsetX: pinMainOffsetX,
     pinMainOffsetYMoution: pinMainOffsetYMoution,
     setAdFormAddress: setAdFormAddress,

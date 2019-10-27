@@ -9,7 +9,7 @@
   var dropArea = window.page.adForm.querySelector('.ad-form__drop-zone');
   var dropAreaColor = dropAreaHeader.style.color;
   var dropAreaColorHover = '#ff5635';
-  var adFormFoto = window.page.adForm.querySelector('.ad-form__photo');
+  var adFormFoto = window.page.adFormFoto;
   var adFormFileChoosers = window.page.adForm.querySelectorAll('input[type="file"]');
   var adFormFileDropAreas = [dropAreaHeader, dropArea];
 
@@ -73,11 +73,12 @@
     var files = Array.prototype.slice.call(this.files);
     checkInput(this, adFormHeadeFileChooser, files);
   }
-
   function onAreaDrop(evt) {
-    var data = evt.dataTransfer;
-    var files = Array.prototype.slice.call(data.files);
-    checkInput(this, dropAreaHeader, files);
+    if (!window.page.adFormFieldsets[0].disabled) {
+      var data = evt.dataTransfer;
+      var files = Array.prototype.slice.call(data.files);
+      checkInput(this, dropAreaHeader, files);
+    }
   }
 
   adFormFileChoosers.forEach(function (v) {
@@ -112,9 +113,4 @@
   adFormFileDropAreas.forEach(function (v) {
     v.addEventListener('drop', onAreaDrop);
   });
-
-  window.addImg = {
-    adFormPreview: adFormPreview,
-    adFormFoto: adFormFoto,
-  };
 })();

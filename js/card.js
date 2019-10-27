@@ -61,8 +61,22 @@
 
     cardElm.querySelector('.popup__avatar').src = advertisement.author.avatar;
 
-    cardFragment.append(cardElm);
+    console.log('cardElm', cardElm);
 
+    console.dir(advertisement.offer);
+
+    // var childrens = cardElm.children;
+    // for (var i = 0; i < childrens.length; i++) {
+    //   console.dir(childrens[i]);
+    //   if (childrens[i].innerHTML === '') {
+    //     console.log(i);
+    //     delete cardElm.children[i];
+    //   }
+
+    // }
+    // console.log(cardElm.children);
+
+    cardFragment.append(cardElm);
     cardМarker.before(cardFragment);
   }
 

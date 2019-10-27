@@ -7,9 +7,7 @@
   var timeout = window.page.adForm.querySelector('#timeout');
   var adFormButtonReset = window.page.adForm.querySelector('.ad-form__reset');
   var adFormButtonSubmit = window.page.adForm.querySelector('.ad-form__submit');
-  var adFormInputs = window.page.adForm.querySelectorAll('input');
   var adFormRoom = window.page.adForm.querySelector('#room_number');
-  var adFormPreviewSrc = window.addImg.adFormPreview.src;
 
   var type = {
     bungalo: 0,
@@ -54,7 +52,6 @@
       switch (true) {
         case target.validity.valueMissing:
           target.setCustomValidity('Добавьте заголовок объявления');
-          target.style.boxShadow = '0 0 2px 2px red';
           break;
         case target.validity.tooShort:
           target.setCustomValidity('Заголовок объявления не должен быть меньше 30 символов');
@@ -107,7 +104,6 @@
     function validationTypePrice() {
       adFormPrice.placeholder = type[target.value];
       adFormPrice.min = type[target.value];
-      adFormPrice.value = '';
     }
 
     function validationTimeInout(elm) {
@@ -141,17 +137,14 @@
     window.backend.save(new FormData(window.page.adForm), window.inquiries.onSaveXhr, window.inquiries.onErrorXhr);
   });
 
-  var adFormFileChooser = window.page.adForm.querySelector('.ad-form-header__input'); /* delete */
-
   function onAdFormButtonSubmitClick() {
-    for (var i = 0; i < adFormInputs.length; i++) {
-      var input = adFormInputs[i];
+    for (var i = 0; i < window.page.adFormInputs.length; i++) {
+      var input = window.page.adFormInputs[i];
       if (input.checkValidity() === false) {
         input.style.boxShadow = '0 0 2px 2px red';
         input.checkValidity();
       }
     }
-    console.dir(adFormFileChooser);
   }
   var onAdFormButtonSubmitKeydown = window.util.checkKeyCode.bind(null, onAdFormButtonSubmitClick);
   adFormButtonSubmit.addEventListener('click', onAdFormButtonSubmitClick);
@@ -159,10 +152,7 @@
 
   function onAdFormButtonResetClick(evt) {
     evt.preventDefault();
-    window.page.adForm.reset();
-    window.addImg.adFormPreview.src = adFormPreviewSrc;
-    window.addImg.adFormFoto.innerHTML = '';
-    window.page.setAdFormAddress(window.page.pinMainOffsetYMoution);
+    window.page.disablePage();
   }
   var onPinMainKeydown = window.util.checkKeyCode.bind(null, onAdFormButtonResetClick);
   adFormButtonReset.addEventListener('click', onAdFormButtonResetClick);

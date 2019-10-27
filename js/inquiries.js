@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var elmMain = document.querySelector('main');
+
   function onLoadXhr(dataXhr) {
     window.inquiries.dataPins = dataXhr;
     var filteredData = window.pinsFilter.filterPin();
@@ -39,7 +41,7 @@
     var template = document.querySelector('#' + attributeFragment).content.querySelector('.' + attributeFragment);
     var elm = template.cloneNode(true);
     elm.querySelector('.' + attributeFragment + '__message').innerText = message;
-    document.body.prepend(elm);
+    elmMain.prepend(elm);
 
     function onErrorElmKeydown(evt) {
       window.util.onPopupEscPress(evt, elm);
@@ -75,11 +77,8 @@
     }
   }
 
-  function onSaveXhr(successMessage, xhr) {
+  function onSaveXhr(successMessage) {
     window.page.disablePage();
-    window.page.pinMain.addEventListener('mousedown', window.page.onPinMainMousedown);
-    window.page.pinMain.addEventListener('keydown', window.page.onPinMainKeydown);
-    console.dir(xhr);
     openCloseMessagePopup(successMessage, true, 'success');
   }
 
