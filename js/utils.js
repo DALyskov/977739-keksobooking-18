@@ -14,12 +14,6 @@
       v.disabled = toggle;
     });
   }
-  // Фун.Обр по esc
-  function onPopupEscPress(evt, domElement) {
-    if (evt.keyCode === ESC_KEYCODE) {
-      closePopup(domElement);
-    }
-  }
   // Фун. проверки соответствия кода клавиш enter и space
   function checkKeyCode(cb, evt) {
     if (evt.keyCode === ENTER_KEYCODE || evt.keyCode === SPACE_KEYCODE) {
@@ -44,7 +38,6 @@
   window.util = {
     ESC_KEYCODE: ESC_KEYCODE,
     toggleEnableBlock: toggleEnableBlock,
-    onPopupEscPress: onPopupEscPress,
     checkKeyCode: checkKeyCode,
     checkAndRemoveElm: checkAndRemoveElm,
     closePopup: closePopup,

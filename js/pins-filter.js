@@ -10,7 +10,8 @@
   var mapFilterInputs = window.page.mapFilter.querySelectorAll('input');
 
   var onChangeFilterPin = window.debounce(function () {
-    window.inquiries.onLoadXhr(window.inquiries.dataPins);
+    // window.inquiries.onLoadXhr(window.inquiries.dataPins);
+    window.page.addPins(window.inquiries.dataPins);
   });
 
   var priceListDict = {
@@ -57,9 +58,9 @@
     return rank;
   }
 
-  function filterPin() {
+  function filterPin(data) {
     var arrChecked = checkCheckbox();
-    var newData = window.inquiries.dataPins.filter(function (v) {
+    var newData = data.filter(function (v) {
       return (v.offer) && getRank(v, arrChecked) === (4 + arrChecked.length);
     }).slice(0, QUANTITY_ADVERTISEMENT);
     return newData;
