@@ -3,7 +3,7 @@
 (function () {
   var cardМarker = window.page.mapSection.querySelector('.map__filters-container');
 
-  var typeListMap = {
+  var typeListDict = {
     palace: 'Дворец',
     flat: 'Квартира',
     house: 'Дом',
@@ -35,7 +35,7 @@
     var description = cardElm.querySelector('.popup__description');
     var avatar = cardElm.querySelector('.popup__avatar');
     var featureParent = cardElm.querySelector('.popup__features');
-    var popupPhotos = cardElm.querySelector('.popup__photos');
+    var photosContainer = cardElm.querySelector('.popup__photos');
 
     function setTitle() {
       title.textContent = advertisement.offer.title;
@@ -44,7 +44,7 @@
       price.innerHTML = advertisement.offer.price + '&#x20bd;<span>/ночь</span>';
     }
     function setType() {
-      type.textContent = typeListMap[advertisement.offer.type];
+      type.textContent = typeListDict[advertisement.offer.type];
     }
     function setRooms() {
       room.textContent = advertisement.offer.rooms + plural([' комната для ', ' комнаты  для ', ' комнат  для '], advertisement.offer.rooms) + advertisement.offer.guests + plural([' гостя', ' гостей'], advertisement.offer.guests);
@@ -66,11 +66,11 @@
     }
     function setPhotos() {
       var popupPhotoSource = cardElm.querySelector('.popup__photo');
-      popupPhotos.innerHTML = '';
+      photosContainer.innerHTML = '';
       advertisement.offer.photos.forEach(function (photo) {
         var popupPhoto = popupPhotoSource.cloneNode(true);
         popupPhoto.src = photo;
-        popupPhotos.append(popupPhoto);
+        photosContainer.append(popupPhoto);
       });
     }
     function setAvatar() {
@@ -100,14 +100,16 @@
     checkDataTime();
     checkData(advertisement.offer.features, featureParent, setFeature);
     checkData(advertisement.offer.description, description, setDescription);
-    checkData(advertisement.offer.photos, popupPhotos, setPhotos);
+    checkData(advertisement.offer.photos, photosContainer, setPhotos);
     checkData(advertisement.author.avatar, avatar, setAvatar);
 
     cardFragment.append(cardElm);
     cardМarker.before(cardFragment);
+
+    document.removeEventListener('keydown', window.inquiries.onMapKeydown);
   }
 
   window.card = {
-    addСard: addСard
+    addСard: addСard,
   };
 })();

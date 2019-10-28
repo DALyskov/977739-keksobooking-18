@@ -3,19 +3,19 @@
 (function () {
   var adFormGuestsQuantity = window.page.adForm.querySelector('#capacity');
   var adFormPrice = window.page.adForm.querySelector('#price');
-  var timein = window.page.adForm.querySelector('#timein');
-  var timeout = window.page.adForm.querySelector('#timeout');
+  var adFormTimein = window.page.adForm.querySelector('#timein');
+  var adFormTimeout = window.page.adForm.querySelector('#timeout');
   var adFormButtonReset = window.page.adForm.querySelector('.ad-form__reset');
   var adFormButtonSubmit = window.page.adForm.querySelector('.ad-form__submit');
   var adFormRoom = window.page.adForm.querySelector('#room_number');
 
-  var type = {
+  var typeHouseListDict = {
     bungalo: 0,
     flat: 1000,
     house: 5000,
     palace: 10000,
   };
-  var rooms = {
+  var roomListtDict = {
     1: [2, 3, 0],
     2: [3, 0],
     3: [0],
@@ -30,7 +30,7 @@
   }
 
   function validationRoomCapacity() {
-    var disabled = rooms[adFormRoom.options[adFormRoom.selectedIndex].value];
+    var disabled = roomListtDict[adFormRoom.options[adFormRoom.selectedIndex].value];
     setDefaultOptions();
     for (var i = 0; i < adFormGuestsQuantity.options.length; i++) {
       var quantityOption = adFormGuestsQuantity.options[i];
@@ -102,8 +102,8 @@
     var target = evt.target;
 
     function validationTypePrice() {
-      adFormPrice.placeholder = type[target.value];
-      adFormPrice.min = type[target.value];
+      adFormPrice.placeholder = typeHouseListDict[target.value];
+      adFormPrice.min = typeHouseListDict[target.value];
     }
 
     function validationTimeInout(elm) {
@@ -115,10 +115,10 @@
         validationTypePrice();
         break;
       case 'timein':
-        validationTimeInout(timeout);
+        validationTimeInout(adFormTimeout);
         break;
       case 'timeout':
-        validationTimeInout(timein);
+        validationTimeInout(adFormTimein);
         break;
       case 'rooms':
         validationRoomCapacity();
@@ -154,7 +154,7 @@
     evt.preventDefault();
     window.page.disablePage();
   }
-  var onPinMainKeydown = window.util.checkKeyCode.bind(null, onAdFormButtonResetClick);
+  var onAdFormButtonResetKeydown = window.util.checkKeyCode.bind(null, onAdFormButtonResetClick);
   adFormButtonReset.addEventListener('click', onAdFormButtonResetClick);
-  adFormButtonReset.addEventListener('keydown', onPinMainKeydown);
+  adFormButtonReset.addEventListener('keydown', onAdFormButtonResetKeydown);
 })();

@@ -10,32 +10,38 @@
     window.util.checkAndRemoveElm(window.page.mapSection, '.map__pin--new');
     window.util.checkAndRemoveElm(window.page.mapSection, '.map__card');
     window.page.addPin(filteredData.length, filteredData);
+    window.page.enableMapFilter();
 
     var pins = window.page.pinsSection.querySelectorAll('.map__pin--new');
     function onPinClick(advertisement) {
       pins[i].addEventListener('click', function () {
         window.util.checkAndRemoveElm(window.page.mapSection, '.map__card');
         window.card.addСard(advertisement);
-        pins.forEach(function (v) {
-          v.classList.remove('map__pin--active');
-        });
-        this.classList.add('map__pin--active');
 
-        var card = document.querySelector('.map__card');
-        var cardEscButton = card.querySelector('.popup__close');
-        function onMapKeydown(evt) {
-          window.util.onPopupEscPress(evt, card);
+        function removeClassActive() {
           pins.forEach(function (v) {
             v.classList.remove('map__pin--active');
           });
-          document.removeEventListener('keydown', onMapKeydown);
         }
+        removeClassActive();
+
+        this.classList.add('map__pin--active');
+        var card = document.querySelector('.map__card');
+        var cardEscButton = card.querySelector('.popup__close');
+
+        function onMapKeydown(evt) {
+          if (evt.keyCode === window.util.ESC_KEYCODE) {
+            removeClassActive();
+            window.util.closePopup(card);
+            document.removeEventListener('keydown', onMapKeydown);
+          }
+        }
+        window.inquiries.onMapKeydown = onMapKeydown;
+
         document.addEventListener('keydown', onMapKeydown);
         cardEscButton.addEventListener('click', function () {
-          // window.util.closePopup(card);
-          // pins.forEach(function (v) {
-          //   v.classList.remove('map__pin--active');
-          // });
+          window.util.closePopup(card);
+          removeClassActive();
           document.removeEventListener('keydown', onMapKeydown);
         });
       });
@@ -51,7 +57,8 @@
   function openCloseMessagePopup(message, reasonCall, attributeFragment) {
     var template = document.querySelector('#' + attributeFragment).content.querySelector('.' + attributeFragment);
     var elm = template.cloneNode(true);
-    elm.querySelector('.' + attributeFragment + '__message').innerText = message;
+    var elmMessage = elm.querySelector('.' + attributeFragment + '__message');
+    elmMessage.innerText = message;
     elmMain.prepend(elm);
 
     function onErrorElmKeydown(evt) {
@@ -59,10 +66,12 @@
       document.removeEventListener('keydown', onErrorElmKeydown);
       document.removeEventListener('click', onErrorElmCkick);
     }
-    function onErrorElmCkick() {
-      window.util.closePopup(elm);
-      document.removeEventListener('keydown', onErrorElmKeydown);
-      document.removeEventListener('click', onErrorElmCkick);
+    function onErrorElmCkick(evt) {
+      if (evt.target.closest('.' + attributeFragment + '__message') === null) {
+        window.util.closePopup(elm);
+        document.removeEventListener('keydown', onErrorElmKeydown);
+        document.removeEventListener('click', onErrorElmCkick);
+      }
     }
 
     if (reasonCall) {

@@ -13,7 +13,7 @@
     window.inquiries.onLoadXhr(window.inquiries.dataPins);
   });
 
-  var price = {
+  var priceListDict = {
     low: [0, 10000],
     middle: [10001, 50000],
     high: [50001, Infinity],
@@ -41,8 +41,8 @@
 
     checkFilter(mapFilterType, dataPin.offer.type);
     if (mapFilterPrice.value === 'any' ||
-    (price[mapFilterPrice.value][0] <= dataPin.offer.price &&
-      price[mapFilterPrice.value][1] >= dataPin.offer.price)) {
+    (priceListDict[mapFilterPrice.value][0] <= dataPin.offer.price &&
+      priceListDict[mapFilterPrice.value][1] >= dataPin.offer.price)) {
       rank += 1;
     }
     checkFilter(mapFilterRoomQuantity, dataPin.offer.rooms);

@@ -23,10 +23,10 @@
   var adFormFoto = adForm.querySelector('.ad-form__photo');
   var adFormPreviewSrc = adFormPreview.src;
 
-  function addPin(pinAmount, pins) {
+  function addPin(pinQuantity, pins) {
     var template = document.querySelector('#pin').content.querySelector('.map__pin');
     var pinFragment = document.createDocumentFragment();
-    for (var i = 0; i < pinAmount; i++) {
+    for (var i = 0; i < pinQuantity; i++) {
       var pinElm = template.cloneNode(true);
       pinElm.classList.add('map__pin--new');
       pinElm.style.left = pins[i].location.x - (PIN_ELM_WIDTH / 2) + 'px';
@@ -95,7 +95,6 @@
   function enablePage() {
     mapSection.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
-    enableMapFilter();
     enableAdForm();
 
     window.backend.load(window.inquiries.onLoadXhr, window.inquiries.onErrorXhr);
@@ -118,9 +117,8 @@
     mapFilter: mapFilter,
     mapFilterSelects: mapFilterSelects,
     disablePage: disablePage,
+    enableMapFilter: enableMapFilter,
     addPin: addPin,
-    // onPinMainMousedown: onPinMainMousedown, /* check and delete */
-    // onPinMainKeydown: onPinMainKeydown, /* check and delete */
     pinMainOffsetX: pinMainOffsetX,
     pinMainOffsetYMoution: pinMainOffsetYMoution,
     setAdFormAddress: setAdFormAddress,

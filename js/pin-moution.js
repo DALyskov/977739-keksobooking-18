@@ -2,8 +2,8 @@
 
 (function () {
   var pinMainMinX = -window.page.pinMainOffsetX;
-  var PIN_MAIN_MIN_Y = 130 - window.page.pinMain.offsetHeight - 12; /* не const */
-  var PIN_MAIN_MAX_Y = 630 - window.page.pinMain.offsetHeight - 12;
+  var pinMainMinY = 130 - window.page.pinMain.offsetHeight - 12;
+  var pinMainMaxY = 630 - window.page.pinMain.offsetHeight - 12;
 
   window.page.pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -36,7 +36,7 @@
       if (pinMainX >= pinMainMinX && pinMainX <= pinMainMaxX) {
         window.page.pinMain.style.left = pinMainX + 'px';
       }
-      if (pinMainY >= PIN_MAIN_MIN_Y && pinMainY <= PIN_MAIN_MAX_Y) {
+      if (pinMainY >= pinMainMinY && pinMainY <= pinMainMaxY) {
         window.page.pinMain.style.top = pinMainY + 'px';
       }
 
