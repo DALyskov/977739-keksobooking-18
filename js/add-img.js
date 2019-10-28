@@ -4,7 +4,6 @@
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   var adFormHeadeFileChooser = window.page.adForm.querySelector('.ad-form__field input');
-  // var adFormPreview = window.page.adForm.querySelector('.ad-form-header__preview img');
   var dropAreaHeader = window.page.adForm.querySelector('.ad-form-header__drop-zone');
   var dropArea = window.page.adForm.querySelector('.ad-form__drop-zone');
   var dropAreaColor = dropAreaHeader.style.color;

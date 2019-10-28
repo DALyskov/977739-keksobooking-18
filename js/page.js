@@ -155,7 +155,6 @@
 
   window.page = {
     mapSection: mapSection,
-    // pinsSection: pinsSection,
     pinMain: pinMain,
     adForm: adForm,
     adFormAddress: adFormAddress,
@@ -163,11 +162,9 @@
     adFormInputs: adFormInputs,
     adFormPreview: adFormPreview,
     adFormFoto: adFormFoto,
-    adFormPreviewSrc: adFormPreviewSrc,
     mapFilter: mapFilter,
     mapFilterSelects: mapFilterSelects,
     disablePage: disablePage,
-    enableMapFilter: enableMapFilter,
     addPins: addPins,
     pinMainOffsetX: pinMainOffsetX,
     pinMainOffsetYMoution: pinMainOffsetYMoution,

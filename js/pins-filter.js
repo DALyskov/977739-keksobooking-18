@@ -58,14 +58,6 @@
     return rank;
   }
 
-  // function filterPin() {
-  //   var arrChecked = checkCheckbox();
-  //   var newData = window.inquiries.dataPins.filter(function (v) {
-  //     return (v.offer) && getRank(v, arrChecked) === (4 + arrChecked.length);
-  //   }).slice(0, QUANTITY_ADVERTISEMENT);
-  //   return newData;
-  // }
-
   function filterPin(data) {
     var arrChecked = checkCheckbox();
     var newData = data.filter(function (v) {

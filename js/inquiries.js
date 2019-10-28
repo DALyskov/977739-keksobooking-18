@@ -5,11 +5,8 @@
 
   function onLoadXhr(dataXhr) {
     window.inquiries.dataPins = dataXhr;
-    console.log(window.inquiries.dataPins);
     window.page.addPins(window.inquiries.dataPins);
   }
-
-
 
   function openCloseMessagePopup(message, reasonCall, attributeFragment) {
     var template = document.querySelector('#' + attributeFragment).content.querySelector('.' + attributeFragment);
@@ -55,8 +52,9 @@
   }
 
   function onSaveXhr(successMessage) {
-    window.page.disablePage();
+
     openCloseMessagePopup(successMessage, true, 'success');
+    window.page.disablePage();
   }
 
   window.inquiries = {
