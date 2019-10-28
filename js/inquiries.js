@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var ESC_KEYCODE = 27;
   var elmMain = document.querySelector('main');
 
   function onLoadXhr(dataXhr) {
@@ -16,9 +17,11 @@
     elmMain.prepend(elm);
 
     function onErrorElmKeydown(evt) {
-      window.util.onPopupEscPress(evt, elm);
-      document.removeEventListener('keydown', onErrorElmKeydown);
-      document.removeEventListener('click', onErrorElmCkick);
+      if (evt.keyCode === ESC_KEYCODE) {
+        window.util.closePopup(elm);
+        document.removeEventListener('keydown', onErrorElmKeydown);
+        document.removeEventListener('click', onErrorElmCkick);
+      }
     }
     function onErrorElmCkick(evt) {
       if (evt.target.closest('.' + attributeFragment + '__message') === null) {
