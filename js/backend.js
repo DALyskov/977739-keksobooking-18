@@ -39,7 +39,7 @@
 
     xhr.addEventListener('load', function () {
       if (xhr.status === SUCCESS_CODE) {
-        onLoad('Ваше объявление \n сохранено');
+        onLoad('Ваше объявление сохранено');
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText, reasonCallSave);
       }

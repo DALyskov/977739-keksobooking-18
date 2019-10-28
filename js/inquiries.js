@@ -13,7 +13,7 @@
     var template = document.querySelector('#' + attributeFragment).content.querySelector('.' + attributeFragment);
     var elm = template.cloneNode(true);
     var elmMessage = elm.querySelector('.' + attributeFragment + '__message');
-    elmMessage.innerText = message;
+    elmMessage.textContent = message;
     elmMain.prepend(elm);
 
     function onErrorElmKeydown(evt) {
