@@ -4,7 +4,7 @@
   var URL_GET = 'https://js.dump.academy/keksobooking/data';
   var URL_POST = 'https://js.dump.academy/keksobooking';
   var SUCCESS_CODE = 200;
-  var TIMEOUT = 1000;
+  var TIMEOUT = 3000;
 
   function request(method, url, onSuccess, onError, data, reasonCallSave) {
 
