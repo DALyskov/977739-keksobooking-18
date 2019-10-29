@@ -38,7 +38,7 @@
   }
 
   function addPins(data) {
-    var filteredData = window.pinsFilter.filterPin(data);
+    var filteredData = window.pinsFilter.checkData(data);
 
     window.util.checkAndRemoveElm(mapSection, '.map__pin--new');
     window.util.checkAndRemoveElm(mapSection, '.map__card');
@@ -47,10 +47,10 @@
 
     var pins = pinsSection.querySelectorAll('.map__pin--new');
     function onPinClick(advertisement) {
-      var pinActiv = pins[i];
-      pinActiv.addEventListener('click', function () {
+      var pinActive = pins[i];
+      pinActive.addEventListener('click', function () {
         window.util.checkAndRemoveElm(mapSection, '.map__card');
-        window.card.addСard(advertisement);
+        window.card.add(advertisement);
 
         function removeClassActive() {
           pins.forEach(function (v) {
@@ -59,7 +59,7 @@
         }
         removeClassActive();
 
-        pinActiv.classList.add('map__pin--active');
+        pinActive.classList.add('map__pin--active');
         var card = document.querySelector('.map__card');
         var cardEscButton = card.querySelector('.popup__close');
 
@@ -115,6 +115,11 @@
     setAdFormAddress(pinMainOffsetYStart);
   }
 
+  function onPinMainMousedown() {
+    enablePage();
+  }
+  var onPinMainKeydown = window.util.checkKeyCode.bind(null, enablePage);
+
   function disablePage() {
     mapSection.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
@@ -135,11 +140,6 @@
   function enableAdForm() {
     window.util.toggleEnableBlock([], adFormFieldsets, false);
   }
-
-  function onPinMainMousedown() {
-    enablePage();
-  }
-  var onPinMainKeydown = window.util.checkKeyCode.bind(null, enablePage);
 
   function enablePage() {
     mapSection.classList.remove('map--faded');

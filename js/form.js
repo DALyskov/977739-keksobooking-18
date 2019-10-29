@@ -29,7 +29,7 @@
     }
   }
 
-  function validationRoomCapacity() {
+  function checkRoomCapacity() {
     var disabled = roomListtDict[adFormRoom.options[adFormRoom.selectedIndex].value];
     setDefaultOptions();
     for (var i = 0; i < adFormGuestsQuantity.options.length; i++) {
@@ -41,14 +41,14 @@
       }
     }
   }
-  validationRoomCapacity();
+  checkRoomCapacity();
 
   window.page.adFormAddress.readOnly = true;
 
   function onAdFormInput(evt) {
     var target = evt.target;
 
-    function validationTitle() {
+    function checkTitle() {
       switch (true) {
         case target.validity.valueMissing:
           target.setCustomValidity('Добавьте заголовок объявления');
@@ -68,7 +68,7 @@
       }
     }
 
-    function validationPrice() {
+    function checkPrice() {
       switch (true) {
         case target.validity.valueMissing:
           target.setCustomValidity('Укажите цену за ночь');
@@ -90,10 +90,10 @@
 
     switch (target.name) {
       case 'title':
-        validationTitle();
+        checkTitle();
         break;
       case 'price':
-        validationPrice();
+        checkPrice();
         break;
     }
   }
@@ -101,27 +101,27 @@
   function onAdFormChange(evt) {
     var target = evt.target;
 
-    function validationTypePrice() {
+    function checkTypePrice() {
       adFormPrice.placeholder = typeHouseListDict[target.value];
       adFormPrice.min = typeHouseListDict[target.value];
     }
 
-    function validationTimeInout(elm) {
+    function checkTimeInout(elm) {
       elm.value = target.value;
     }
 
     switch (target.name) {
       case 'type':
-        validationTypePrice();
+        checkTypePrice();
         break;
       case 'timein':
-        validationTimeInout(adFormTimeout);
+        checkTimeInout(adFormTimeout);
         break;
       case 'timeout':
-        validationTimeInout(adFormTimein);
+        checkTimeInout(adFormTimein);
         break;
       case 'rooms':
-        validationRoomCapacity();
+        checkRoomCapacity();
         break;
     }
   }

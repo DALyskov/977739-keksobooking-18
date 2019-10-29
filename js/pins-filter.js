@@ -32,9 +32,9 @@
   function getRank(dataPin, arrChecked) {
     var rank = 0;
 
-    function checkFilter(filter, dataPinProperty) {
-      if (filter.value === 'any' ||
-      filter.value === String(dataPinProperty)) {
+    function checkFilter(filterName, dataPinProperty) {
+      if (filterName.value === 'any' ||
+      filterName.value === String(dataPinProperty)) {
         rank += 1;
       }
     }
@@ -57,7 +57,7 @@
     return rank;
   }
 
-  function filterPin(data) {
+  function checkData(data) {
     var arrChecked = checkCheckbox();
     var newData = data.filter(function (v) {
       return (v.offer) && getRank(v, arrChecked) === (4 + arrChecked.length);
@@ -73,6 +73,6 @@
   });
 
   window.pinsFilter = {
-    filterPin: filterPin,
+    checkData: checkData,
   };
 })();

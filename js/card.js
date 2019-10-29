@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var cardМarker = window.page.mapSection.querySelector('.map__filters-container');
+  var cardMarker = window.page.mapSection.querySelector('.map__filters-container');
 
   var typeListDict = {
     palace: 'Дворец',
@@ -22,7 +22,7 @@
     return forms[idx] || '';
   }
 
-  function addСard(advertisement) {
+  function add(advertisement) {
     var template = document.querySelector('#card').content.querySelector('.map__card');
     var cardFragment = document.createDocumentFragment();
 
@@ -104,12 +104,12 @@
     checkData(advertisement.author.avatar, avatar, setAvatar);
 
     cardFragment.append(cardElm);
-    cardМarker.before(cardFragment);
+    cardMarker.before(cardFragment);
 
     document.removeEventListener('keydown', window.inquiries.onMapKeydown);
   }
 
   window.card = {
-    addСard: addСard,
+    add: add,
   };
 })();
