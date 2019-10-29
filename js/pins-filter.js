@@ -10,7 +10,6 @@
   var mapFilterInputs = window.page.mapFilter.querySelectorAll('input');
 
   var onChangeFilterPin = window.debounce(function () {
-    // window.inquiries.onLoadXhr(window.inquiries.dataPins);
     window.page.addPins(window.inquiries.dataPins);
   });
 

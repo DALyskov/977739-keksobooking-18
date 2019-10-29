@@ -1,9 +1,11 @@
 'use strict';
 
 (function () {
+  var PIN_MAIN_MIN_Y_SOURCE = 130;
+  var PIN_MAIN_MAX_Y_SOURCE = 630;
   var pinMainMinX = -window.page.pinMainOffsetX;
-  var pinMainMinY = 130 - window.page.pinMain.offsetHeight - 12;
-  var pinMainMaxY = 630 - window.page.pinMain.offsetHeight - 12;
+  var pinMainMinY = PIN_MAIN_MIN_Y_SOURCE - window.page.pinMain.offsetHeight - window.page.pinMainHeightCorretion;
+  var pinMainMaxY = PIN_MAIN_MAX_Y_SOURCE - window.page.pinMain.offsetHeight - window.page.pinMainHeightCorretion;
 
   window.page.pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();

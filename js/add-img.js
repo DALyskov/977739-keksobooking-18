@@ -2,6 +2,9 @@
 
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var EVENTS_DRAG_AND_DROP = ['dragenter', 'dragover', 'dragleave', 'drop'];
+  var EVENTS_DRAG_ENTER_AND_OVER = ['dragenter', 'dragover'];
+  var EVENTS_DRAG_LEAVE_AND_DROP = ['dragleave', 'drop'];
 
   var adFormHeadeFileChooser = window.page.adForm.querySelector('.ad-form__field input');
   var dropAreaHeader = window.page.adForm.querySelector('.ad-form-header__drop-zone');
@@ -68,48 +71,47 @@
     }
   }
 
-  function onInputImgChange() {
-    var files = Array.prototype.slice.call(this.files);
-    checkInput(this, adFormHeadeFileChooser, files);
-  }
-  function onAreaDrop(evt) {
-    if (!window.page.adFormFieldsets[0].disabled) {
-      var data = evt.dataTransfer;
-      var files = Array.prototype.slice.call(data.files);
-      checkInput(this, dropAreaHeader, files);
-    }
-  }
-
   adFormFileChoosers.forEach(function (v) {
-    v.addEventListener('change', onInputImgChange);
+    v.addEventListener('change', function () {
+      var files = Array.prototype.slice.call(v.files);
+      checkInput(v, adFormHeadeFileChooser, files);
+    });
   });
 
-  var evtDragAndDropArr = ['dragenter', 'dragover', 'dragleave', 'drop'];
   function onDropAreaEvtDragAndDrop(evt) {
     evt.preventDefault();
     evt.stopPropagation();
   }
-  evtDragAndDropArr.forEach(function (evtName) {
+  EVENTS_DRAG_AND_DROP.forEach(function (evtName) {
     dropAreaHeader.addEventListener(evtName, onDropAreaEvtDragAndDrop);
     dropArea.addEventListener(evtName, onDropAreaEvtDragAndDrop);
   });
-  function onDropAreaFileIn() {
-    this.style.color = dropAreaColorHover;
-  }
 
-  function onDropAreaFileLeave() {
-    this.style.color = dropAreaColor;
-  }
-  ['dragenter', 'dragover'].forEach(function (evtName) {
-    dropAreaHeader.addEventListener(evtName, onDropAreaFileIn);
-    dropArea.addEventListener(evtName, onDropAreaFileIn);
+  EVENTS_DRAG_ENTER_AND_OVER.forEach(function (evtName) {
+    dropAreaHeader.addEventListener(evtName, function () {
+      dropAreaHeader.style.color = dropAreaColorHover;
+    });
+    dropArea.addEventListener(evtName, function () {
+      dropArea.style.color = dropAreaColorHover;
+    });
   });
-  ['dragleave', 'drop'].forEach(function (evtName) {
-    dropAreaHeader.addEventListener(evtName, onDropAreaFileLeave);
-    dropArea.addEventListener(evtName, onDropAreaFileLeave);
+
+  EVENTS_DRAG_LEAVE_AND_DROP.forEach(function (evtName) {
+    dropAreaHeader.addEventListener(evtName, function () {
+      dropAreaHeader.style.color = dropAreaColor;
+    });
+    dropArea.addEventListener(evtName, function () {
+      dropArea.style.color = dropAreaColor;
+    });
   });
 
   adFormFileDropAreas.forEach(function (v) {
-    v.addEventListener('drop', onAreaDrop);
+    v.addEventListener('drop', function (evt) {
+      if (!window.page.adFormFieldsets[0].disabled) {
+        var data = evt.dataTransfer;
+        var files = Array.prototype.slice.call(data.files);
+        checkInput(v, dropAreaHeader, files);
+      }
+    });
   });
 })();

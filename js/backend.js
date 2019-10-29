@@ -4,42 +4,22 @@
   var URL_GET = 'https://js.dump.academy/keksobooking/data';
   var URL_POST = 'https://js.dump.academy/keksobooking';
   var SUCCESS_CODE = 200;
+  var TIMEOUT = 1000;
 
-  function load(onLoad, onError) {
+  function request(method, url, onSuccess, onError, data, reasonCallSave) {
+
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === SUCCESS_CODE) {
-        onLoad(xhr.response);
+      if (reasonCallSave) {
+        var argument = 'Ваше объявление \n сохранено';
       } else {
-        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        argument = xhr.response;
       }
-    });
 
-    xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения');
-    });
-
-    xhr.addEventListener('timeout', function () {
-      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
-    });
-
-    xhr.timeout = 1000;
-
-    xhr.open('GET', URL_GET);
-    xhr.send();
-  }
-
-  var save = function (data, onLoad, onError) {
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
-
-    var reasonCallSave = true;
-
-    xhr.addEventListener('load', function () {
       if (xhr.status === SUCCESS_CODE) {
-        onLoad('Ваше объявление \n сохранено');
+        onSuccess(argument);
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText, reasonCallSave);
       }
@@ -53,11 +33,21 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс', reasonCallSave);
     });
 
-    xhr.timeout = 1000;
 
-    xhr.open('POST', URL_POST);
+    xhr.timeout = TIMEOUT;
+
+    xhr.open(method, url);
     xhr.send(data);
-  };
+
+  }
+
+  function load(onLoad, onError) {
+    request('GET', URL_GET, onLoad, onError, null, false);
+  }
+
+  function save(data, onLoad, onError) {
+    request('POST', URL_POST, onLoad, onError, data, true);
+  }
 
   window.backend = {
     load: load,

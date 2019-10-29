@@ -1,9 +1,7 @@
 'use strict';
 
 (function () {
-  var PIN_ELM_WIDTH = 50;
-  var PIN_ELM_HEIGHT = 70;
-
+  var pinMainHeightCorretion = 12;
   var mapSection = document.querySelector('.map');
   var pinsSection = mapSection.querySelector('.map__pins');
   var pinMain = pinsSection.querySelector('.map__pin--main');
@@ -12,7 +10,7 @@
   var mapFilterSelects = mapFilter.querySelectorAll('select');
   var mapFilterFieldset = mapFilter.querySelectorAll('fieldset');
   var pinMainOffsetX = pinMain.offsetWidth / 2;
-  var pinMainOffsetYMoution = pinMain.offsetHeight + 12;
+  var pinMainOffsetYMoution = pinMain.offsetHeight + pinMainHeightCorretion;
   var pinMainOffsetYStart = pinMain.offsetHeight / 2;
 
   var adForm = document.querySelector('.ad-form');
@@ -29,8 +27,8 @@
     for (var i = 0; i < pinQuantity; i++) {
       var pinElm = template.cloneNode(true);
       pinElm.classList.add('map__pin--new');
-      pinElm.style.left = pins[i].location.x - (PIN_ELM_WIDTH / 2) + 'px';
-      pinElm.style.top = (pins[i].location.y - PIN_ELM_HEIGHT) + 'px';
+      pinElm.style.left = pins[i].location.x - (pinElm.offsetWidth / 2) + 'px';
+      pinElm.style.top = (pins[i].location.y - pinElm.offsetHeight) + 'px';
       pinElm.querySelector('img').src = pins[i].author.avatar;
       pinElm.querySelector('img').alt = pins[i].offer.title;
 
@@ -49,7 +47,8 @@
 
     var pins = pinsSection.querySelectorAll('.map__pin--new');
     function onPinClick(advertisement) {
-      pins[i].addEventListener('click', function () {
+      var pinActiv = pins[i];
+      pinActiv.addEventListener('click', function () {
         window.util.checkAndRemoveElm(mapSection, '.map__card');
         window.card.addСard(advertisement);
 
@@ -60,7 +59,7 @@
         }
         removeClassActive();
 
-        this.classList.add('map__pin--active');
+        pinActiv.classList.add('map__pin--active');
         var card = document.querySelector('.map__card');
         var cardEscButton = card.querySelector('.popup__close');
 
@@ -154,6 +153,7 @@
   }
 
   window.page = {
+    pinMainHeightCorretion: pinMainHeightCorretion,
     mapSection: mapSection,
     pinMain: pinMain,
     adForm: adForm,
