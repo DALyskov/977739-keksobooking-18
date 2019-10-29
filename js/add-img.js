@@ -68,18 +68,6 @@
     }
   }
 
-  // function onInputImgChange() {
-  //   var files = Array.prototype.slice.call(this.files);
-  //   checkInput(this, adFormHeadeFileChooser, files);
-  // }
-  // function onAreaDrop(evt) {
-  //   if (!window.page.adFormFieldsets[0].disabled) {
-  //     var data = evt.dataTransfer;
-  //     var files = Array.prototype.slice.call(data.files);
-  //     checkInput(this, dropAreaHeader, files);
-  //   }
-  // }
-
   adFormFileChoosers.forEach(function (v) {
     v.addEventListener('change', function () {
       var files = Array.prototype.slice.call(v.files);
@@ -96,16 +84,8 @@
     dropAreaHeader.addEventListener(evtName, onDropAreaEvtDragAndDrop);
     dropArea.addEventListener(evtName, onDropAreaEvtDragAndDrop);
   });
-  // function onDropAreaFileIn() {
-  //   this.style.color = dropAreaColorHover;
-  // }
 
-  // function onDropAreaFileLeave() {
-  //   this.style.color = dropAreaColor;
-  // }
   ['dragenter', 'dragover'].forEach(function (evtName) {
-    // dropAreaHeader.addEventListener(evtName, onDropAreaFileIn);
-    // dropArea.addEventListener(evtName, onDropAreaFileIn);
     dropAreaHeader.addEventListener(evtName, function () {
       dropAreaHeader.style.color = dropAreaColorHover;
     });
@@ -114,8 +94,6 @@
     });
   });
   ['dragleave', 'drop'].forEach(function (evtName) {
-    // dropAreaHeader.addEventListener(evtName, onDropAreaFileLeave);
-    // dropArea.addEventListener(evtName, onDropAreaFileLeave);
     dropAreaHeader.addEventListener(evtName, function () {
       dropAreaHeader.style.color = dropAreaColor;
     });
@@ -124,9 +102,6 @@
     });
   });
 
-  // adFormFileDropAreas.forEach(function (v) {
-  //   v.addEventListener('drop', onAreaDrop);
-  // });
   adFormFileDropAreas.forEach(function (v) {
     v.addEventListener('drop', function (evt) {
       if (!window.page.adFormFieldsets[0].disabled) {
