@@ -49,7 +49,8 @@
 
     var pins = pinsSection.querySelectorAll('.map__pin--new');
     function onPinClick(advertisement) {
-      pins[i].addEventListener('click', function () {
+      var pinActiv = pins[i];
+      pinActiv.addEventListener('click', function () {
         window.util.checkAndRemoveElm(mapSection, '.map__card');
         window.card.addСard(advertisement);
 
@@ -59,8 +60,7 @@
           });
         }
         removeClassActive();
-
-        this.classList.add('map__pin--active');
+        pinActiv.classList.add('map__pin--active');
         var card = document.querySelector('.map__card');
         var cardEscButton = card.querySelector('.popup__close');
 
