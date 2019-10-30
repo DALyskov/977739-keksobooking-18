@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var pinMainHeightCorretion = 12;
+  var PIN_MAIN_HEIGHT_CORRECTION = 12;
   var mapSection = document.querySelector('.map');
   var pinsSection = mapSection.querySelector('.map__pins');
   var pinMain = pinsSection.querySelector('.map__pin--main');
@@ -10,7 +10,7 @@
   var mapFilterSelects = mapFilter.querySelectorAll('select');
   var mapFilterFieldset = mapFilter.querySelectorAll('fieldset');
   var pinMainOffsetX = pinMain.offsetWidth / 2;
-  var pinMainOffsetYMoution = pinMain.offsetHeight + pinMainHeightCorretion;
+  var pinMainOffsetYMoution = pinMain.offsetHeight + PIN_MAIN_HEIGHT_CORRECTION;
   var pinMainOffsetYStart = pinMain.offsetHeight / 2;
 
   var adForm = document.querySelector('.ad-form');
@@ -153,7 +153,7 @@
   }
 
   window.page = {
-    pinMainHeightCorretion: pinMainHeightCorretion,
+    PIN_MAIN_HEIGHT_CORRECTION: PIN_MAIN_HEIGHT_CORRECTION,
     mapSection: mapSection,
     pinMain: pinMain,
     adForm: adForm,
